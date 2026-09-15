@@ -6,12 +6,11 @@
 ## Metadados
 
 - **Nomes dos alunos e RGM:**
-  - Gabriel Marcolino de Oliveira | RGM: 48226718.
-  - Arthur Tigre | RGM: 48201413.
-  - Giovanni dos Santos Silva | 48159077.
-  - Gabriel de Oliveira Silva | RGM: 48203068.
-  - Adriano Salviano Marcal | RGM: 48188697.
-
+  - Adriano Salviano Marcal | RGM: 48188697
+  - Arthur Tigre | RGM: 48201413
+  - Gabriel de Oliveira Silva | RGM: 48203068
+  - Gabriel Marcolino de Oliveira | RGM: 48226718
+  - Giovanni dos Santos Silva | RGM: 48159077
 ---
 
 ## 1. Caracterização da Organização
