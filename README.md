@@ -6,11 +6,11 @@
 ## Metadados
 
 - **Nomes dos alunos e RGM:**
-  - Gabriel Marcolino de Oliveira | RGM: [Seu RGM Aqui]
-  - [Nome do Aluno 2] | RGM: [RGM do Aluno 2]
-  - [Nome do Aluno 3] | RGM: [RGM do Aluno 3]
-  - [Nome do Aluno 4] | RGM: [RGM do Aluno 4]
-  - [Nome do Aluno 5] | RGM: [RGM do Aluno 5]
+  - Gabriel Marcolino de Oliveira | RGM: 48226718.
+  - Arthur Tigre | RGM: 48201413.
+  - Giovanni dos Santos Silva | 48159077.
+  - Gabriel de Oliveira Silva | RGM: 48203068.
+  - Adriano Salviano Marcal | RGM: 48188697.
 
 ---
 
