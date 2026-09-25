@@ -1,4 +1,4 @@
-# 📦 Entrega 1 — Modelo Conceitual (DER)
+# Entrega 1 — Modelo Conceitual (DER)
 ### Modelagem de um sistema de gestão de informações para a HD Drones 
 
 ---
