@@ -171,10 +171,8 @@
 
 ## 7. Diagrama Entidade-Relacionamento (DER)
 
-- O arquivo visual do DER gerado via brModelo Web encontra-se anexo no repositório no arquivo `conceptual_model.png`.
-
-![Modelo Conceitual DER](./der_HD_drones.png)
-
+- O arquivo visual do DER gerado via brModelo Web encontra-se anexo no repositório no arquivo `der_HD_drones.png`
+  
 ---
 
 ## 8. Justificativa Técnica
