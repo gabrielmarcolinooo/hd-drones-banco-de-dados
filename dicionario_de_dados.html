@@ -91,7 +91,7 @@
     <h1>Caso: Dicionário de Dados do Sistema Comercial HD Drones</h1>
 
     <h2>1. Modelo Conceitual</h2>
-    <p>Este modelo representa a operação comercial da <strong>HD Drones</strong>, cobrindo o fluxo de atendimento em balcão (PDV), ordens de serviço (OS) de manutenção técnica, controle de estoque, historização de preços e regras de comissionamento de funcionários.</p>
+    <p>Este modelo representa a operação comercial da <strong>HD Drones</strong>, cobrindo o fluxo de atendimento em balcão (PDV), ordens de serviço (OS) de manutenção técnica, controle de estoque, historização de preços e auditoria de colaboradores.</p>
 
     <table>
         <thead>
@@ -105,68 +105,62 @@
             <tr>
                 <td><strong>CLIENTES</strong></td>
                 <td><strong>VENDAS</strong></td>
-                <td><strong>0:N</strong> — Um cliente pode realizar várias vendas; uma venda pode ocorrer sem identificação de cliente (venda avulsa) ou vinculada a exatamente um cliente.</td>
+                <td><strong>0:N</strong> — Um cliente pode realizar várias vendas; uma venda pode ocorrer sem identificação de cliente (venda avulsa) ou vinculada a no máximo um cliente (0,1).</td>
             </tr>
             <tr>
-                <td><strong>USUARIOS</strong></td>
+                <td><strong>FUNCIONARIO</strong></td>
                 <td><strong>VENDAS</strong></td>
-                <td><strong>1:N</strong> — Um usuário (vendedor/técnico) registra várias vendas ou ordens de serviço; toda venda é registrada por exatamente um usuário.</td>
+                <td><strong>1:N</strong> — Um funcionário (vendedor/técnico) registra várias vendas ou ordens de serviço (0,n); toda venda é registrada por exatamente um funcionário (1,1).</td>
             </tr>
             <tr>
+                <td><strong>VENDAS</strong></td>
                 <td><strong>PRODUTOS</strong></td>
-                <td><strong>ITENS_VENDA</strong></td>
-                <td><strong>1:N</strong> — Um produto do estoque pode estar presente em vários itens de venda ao longo do tempo.</td>
-            </tr>
-            <tr>
-                <td><strong>VENDAS</strong></td>
-                <td><strong>ITENS_VENDA</strong></td>
-                <td><strong>1:N</strong> — Uma venda contém um ou múltiplos itens de venda registrados.</td>
+                <td><strong>N:M</strong> — Relacionamento <code>&lt;Compoe&gt;</code>: uma venda é composta por um ou vários produtos (1,n); um produto pode compor várias vendas (0,n), congelando os custos e preços aplicados no momento da transação.</td>
             </tr>
             <tr>
                 <td><strong>PRODUTOS</strong></td>
                 <td><strong>HISTORICO_PRECOS</strong></td>
-                <td><strong>1:N</strong> — Um produto pode ter várias alterações de preços de custo/venda registradas.</td>
+                <td><strong>1:N</strong> — Relacionamento <code>&lt;Historiza&gt;</code>: um produto pode ter várias alterações de preços de custo/venda registradas (0,n); cada registro histórico pertence a exatamente um produto (1,1).</td>
             </tr>
             <tr>
                 <td><strong>PRODUTOS</strong></td>
                 <td><strong>MOVIMENTACOES_ESTOQUE</strong></td>
-                <td><strong>1:N</strong> — Um produto pode registrar múltiplos lançamentos de entrada, saída ou ajuste de estoque.</td>
+                <td><strong>1:N</strong> — Relacionamento <code>&lt;Gera&gt;</code>: um produto pode registrar múltiplos lançamentos de entrada, saída ou ajuste de estoque (0,n); cada movimentação refere-se a exatamente um produto (1,1).</td>
             </tr>
             <tr>
-                <td><strong>USUARIOS</strong></td>
+                <td><strong>FUNCIONARIO</strong></td>
                 <td><strong>HISTORICO_PRECOS</strong></td>
-                <td><strong>1:N</strong> — Um usuário pode autorizar/alterar o preço de custo ou tabela de vários produtos.</td>
+                <td><strong>1:N</strong> — Relacionamento <code>&lt;Altera&gt;</code>: um funcionário pode autorizar/alterar o preço de custo ou tabela de vários produtos (0,n); cada registro de alteração é efetuado por exatamente um funcionário (1,1).</td>
             </tr>
             <tr>
-                <td><strong>USUARIOS</strong></td>
+                <td><strong>FUNCIONARIO</strong></td>
                 <td><strong>MOVIMENTACOES_ESTOQUE</strong></td>
-                <td><strong>1:N</strong> — Um usuário pode lançar múltiplos ajustes e movimentações de inventário.</td>
+                <td><strong>1:N</strong> — Relacionamento <code>&lt;Autoriza&gt;</code>: um funcionário pode autorizar múltiplos ajustes e movimentações de inventário (0,n); cada lançamento é autorizado por exatamente um funcionário (1,1).</td>
             </tr>
         </tbody>
     </table>
 
-    <p><strong>VENDAS</strong> é a entidade associativa entre <strong>CLIENTES</strong> e <strong>USUARIOS</strong> (um vendedor atende vários clientes, um cliente é atendido por vários vendedores), desdobrando-se em <strong>ITENS_VENDA</strong> para o detalhamento de produtos e peças comercializados.</p>
+    <p><strong>VENDAS</strong> relaciona-se com <strong>CLIENTES</strong> e <strong>FUNCIONARIO</strong>, desdobrando-se no relacionamento associativo <strong>&lt;Compoe&gt;</strong> com <strong>PRODUTOS</strong> para o detalhamento de itens e peças comercializados.</p>
     <ul>
-        <li><strong>Cliente</strong> é a pessoa física ou jurídica compradora de drones ou tomadora de serviços de assistência.</li>
-        <li><strong>Usuário</strong> é a pessoa física colaboradora da empresa (vendedores e técnicos).</li>
-        <li><strong>Produto</strong> representa o bem físico (drones novos/usados, baterias, peças) mantido em catálogo.</li>
-        <li><strong>Venda</strong> é o registro transacional de caixa ou ordem de serviço concluída.</li>
-        <li><strong>Item_Venda</strong> é o detalhamento individual dos produtos e peças vinculados à venda.</li>
-        <li><strong>Histórico_Preços</strong> é o registro acumulado de alterações de custos e preços de tabela.</li>
-        <li><strong>Movimentação_Estoque</strong> é o log auditável de fluxo físico de materiais (compras, ajustes, perdas).</li>
+        <li><strong>Clientes:</strong> Pessoa física ou jurídica compradora de drones ou tomadora de serviços de assistência.</li>
+        <li><strong>Funcionario:</strong> Pessoa física colaboradora da empresa (vendedores, técnicos, gerentes).</li>
+        <li><strong>Produtos:</strong> Bem físico (drones novos/usados, baterias, peças) mantido em catálogo.</li>
+        <li><strong>Vendas:</strong> Registro transacional de caixa ou ordem de serviço concluída.</li>
+        <li><strong>Movimentacoes_Estoque:</strong> Log auditável do fluxo físico de materiais (compras, ajustes, perdas).</li>
+        <li><strong>Historico_Precos:</strong> Registro acumulado de alterações de custos e preços de tabela.</li>
     </ul>
 
     <h2>2. Fluxo de Dados</h2>
     <p>
-      Cliente chega à recepção/caixa &rarr; cadastro/consulta em <code>CLIENTES</code> &rarr; 
-      o atendimento gera um registro em <code>VENDAS</code>, ligando esse <code>CLIENTES</code> a um <code>USUARIOS</code> (vendedor/técnico) &rarr; 
-      a <code>VENDAS</code> detalha-se em um ou mais registros de <code>ITENS_VENDA</code>, que dão baixa automática no saldo de <code>PRODUTOS</code> &rarr; 
-      qualquer alteração manual de estoque registra auditoria em <code>MOVIMENTACOES_ESTOQUE</code>, e alterações de preços geram registros em <code>HISTORICO_PRECOS</code>.
+      Cliente chega ao balcão &rarr; cadastro/consulta em <code>CLIENTES</code> &rarr; 
+      o atendimento gera um registro em <code>VENDAS</code>, ligando esse <code>CLIENTES</code> a um <code>FUNCIONARIO</code> (vendedor/técnico) &rarr; 
+      a <code>VENDAS</code> conecta-se a um ou mais registros de <code>PRODUTOS</code> através de <code>&lt;Compoe&gt;</code> (que congela os preços aplicados e dá baixa automática no saldo de estoque) &rarr; 
+      qualquer alteração manual de estoque registra auditoria em <code>MOVIMENTACOES_ESTOQUE</code> (autorizada por um <code>FUNCIONARIO</code>), e alterações de preços geram registros imutáveis em <code>HISTORICO_PRECOS</code>.
     </p>
 
     <h2>3. Convenções do Dicionário</h2>
     <p><strong>SGBD:</strong> MySQL 8, mecanismo de armazenamento InnoDB — cuida da persistência dos arquivos de dados, do log de transações e mantém o suporte a chaves estrangeiras (FK) e transações ACID.</p>
-    <p><strong>Codificação de caracteres:</strong> utf8mb4 com collation utf8mb4_0900_ai_ci. Escolhida em vez de latin1 por cobrir acentuação do português sem perda em nomes, dados de clientes e observações comerciais, e por ser totalmente compatível com qualquer caractere Unicode no MySQL 8.</p>
+    <p><strong>Codificação de caracteres:</strong> utf8mb4 com collation utf8mb4_0900_ai_ci. Escolhida por cobrir acentuação do português sem perda em nomes, dados de clientes e observações comerciais, e por ser totalmente compatível com qualquer caractere Unicode.</p>
     
     <p><strong>Notação formal (símbolos usados neste dicionário):</strong></p>
     <table>
@@ -188,7 +182,7 @@
 
     <p><strong>Prefixos:</strong> <code>@ID_</code> identificador (não sofre operação matemática), <code>NM_</code> nome, <code>DT_</code> data/hora, <code>CD_</code> código de domínio/documento, <code>QT_</code> quantidade, <code>VR_</code> valor monetário/float, <code>TP_</code> tipo (categorização), <code>DS_</code> descrição/texto livre.</p>
     <p>
-      <strong>Versão deste dicionário:</strong> v1.0, 14/setembro/2026. 
+      <strong>Versão deste dicionário:</strong> v1.0, 25/setembro/2026. 
       Qualquer alteração de estrutura deve gerar nova revisão registrada nesta seção; 
       a prática atende, ela própria, ao princípio de rastreabilidade exigido pela LGPD (art. 6º, X).
     </p>
@@ -197,10 +191,10 @@
 
     <h3>CLIENTES</h3>
     <div class="notacao">
-        CLIENTES = @ID_CLIENTE + NM_RAZAO + CD_CPF_CNPJ + (DS_TELEFONE) + (DS_EMAIL) + (DS_ENDERECO)
+        CLIENTES = @ID + NM_NOME_RAZAO + CD_CPF_CNPJ + (DS_EMAIL) + (DS_TELEFONE) + (DS_ENDERECO)
     </div>
     <div class="leitura">
-        Leitura: @ID_CLIENTE é o identificador único; NM_RAZAO e CD_CPF_CNPJ são obrigatórios e conectados por +; os três campos seguintes de contato e endereço vêm entre () por serem opcionais no cadastro balcão.
+        Leitura: @ID é o identificador único; NM_NOME_RAZAO e CD_CPF_CNPJ são obrigatórios e conectados por +; os três campos seguintes de contato e endereço vêm entre () por serem opcionais no cadastro de balcão.
     </div>
     <table>
         <thead>
@@ -212,22 +206,22 @@
             </tr>
         </thead>
         <tbody>
-            <tr><td>ID_CLIENTE</td><td>integer</td><td>Sim (PK)</td><td>Código de localização do registro; não sofre operação matemática.</td></tr>
-            <tr><td>NM_RAZAO</td><td>varchar(120)</td><td>Sim</td><td>Nome completo ou Razão Social do cliente.</td></tr>
-            <tr><td>CD_CPF_CNPJ</td><td>varchar(18)</td><td>Sim (único)</td><td>CPF ou CNPJ do cliente; evita duplicidade de cadastro.</td></tr>
-            <tr><td>DS_TELEFONE</td><td>varchar(20)</td><td>Não</td><td>Telefone de contato ou WhatsApp.</td></tr>
-            <tr><td>DS_EMAIL</td><td>varchar(100)</td><td>Não</td><td>Endereço de e-mail do cliente.</td></tr>
-            <tr><td>DS_ENDERECO</td><td>varchar(255)</td><td>Não</td><td>Endereço residencial ou comercial completo.</td></tr>
+            <tr><td>ID</td><td>integer</td><td>Sim (PK)</td><td>Código de localização do registro; não sofre operação matemática.</td></tr>
+            <tr><td>NOME_RAZAO</td><td>varchar(100)</td><td>Sim</td><td>Nome completo ou Razão Social do cliente.</td></tr>
+            <tr><td>CPF_CNPJ</td><td>varchar(20)</td><td>Sim (único)</td><td>CPF ou CNPJ do cliente; evita duplicidade de cadastro.</td></tr>
+            <tr><td>EMAIL</td><td>varchar(100)</td><td>Não</td><td>Endereço de e-mail do cliente.</td></tr>
+            <tr><td>TELEFONE</td><td>varchar(20)</td><td>Não</td><td>Telefone de contato ou WhatsApp.</td></tr>
+            <tr><td>ENDERECO</td><td>varchar(150)</td><td>Não</td><td>Endereço residencial ou comercial completo.</td></tr>
         </tbody>
     </table>
-    <div class="indices"><strong>Índices:</strong> PK ID_CLIENTE; índice único secundário em CD_CPF_CNPJ.</div>
+    <div class="indices"><strong>Índices:</strong> PK ID; índice único secundário em CPF_CNPJ.</div>
 
-    <h3>USUARIOS</h3>
+    <h3>FUNCIONARIO</h3>
     <div class="notacao">
-        USUARIOS = @ID_USUARIO + NM_USUARIO + [TP_VENDEDOR | TP_TECNICO | TP_GERENTE]
+        FUNCIONARIO = @ID + NM_NOME + TP_CARGO
     </div>
     <div class="leitura">
-        Leitura: @ID_USUARIO e NM_USUARIO são obrigatórios; [TP_VENDEDOR | TP_TECNICO | TP_GERENTE] exige a escolha obrigatória do cargo exercido pelo colaborador.
+        Leitura: @ID e NM_NOME são obrigatórios; TP_CARGO identifica a função do colaborador no sistema.
     </div>
     <table>
         <thead>
@@ -239,19 +233,19 @@
             </tr>
         </thead>
         <tbody>
-            <tr><td>ID_USUARIO</td><td>integer</td><td>Sim (PK)</td><td>Identificador do colaborador/operador do sistema.</td></tr>
-            <tr><td>NM_USUARIO</td><td>varchar(100)</td><td>Sim</td><td>Nome do colaborador.</td></tr>
-            <tr><td>TP_CARGO</td><td>varchar(20)</td><td>Sim (escolha)</td><td>Cargo do colaborador; orienta a regra de cálculo da comissão.</td></tr>
+            <tr><td>ID</td><td>integer</td><td>Sim (PK)</td><td>Identificador do colaborador/operador do sistema.</td></tr>
+            <tr><td>NOME</td><td>varchar(100)</td><td>Sim</td><td>Nome do colaborador.</td></tr>
+            <tr><td>CARGO</td><td>varchar(50)</td><td>Sim</td><td>Cargo do colaborador (ex: Vendedor, Técnico, Gerente).</td></tr>
         </tbody>
     </table>
-    <div class="indices"><strong>Índices:</strong> PK ID_USUARIO.</div>
+    <div class="indices"><strong>Índices:</strong> PK ID.</div>
 
     <h3>PRODUTOS</h3>
     <div class="notacao">
-        PRODUTOS = @ID_PRODUTO + NM_PRODUTO + TP_CATEGORIA + VR_PRECO_VENDA + VR_PRECO_CUSTO + QT_ESTOQUE
+        PRODUTOS = @ID + NM_NOME + VR_PRECO_CUSTO + VR_PRECO_VENDA + QT_QUANTIDADE_ESTOQUE + TP_CATEGORIA
     </div>
     <div class="leitura">
-        Leitura: @ID_PRODUTO é a chave primária; os cinco atributos seguintes são de preenchimento obrigatório no cadastro do item.
+        Leitura: @ID é a chave primária; os cinco atributos seguintes são de preenchimento obrigatório no cadastro do item.
     </div>
     <table>
         <thead>
@@ -263,22 +257,22 @@
             </tr>
         </thead>
         <tbody>
-            <tr><td>ID_PRODUTO</td><td>integer</td><td>Sim (PK)</td><td>Identificador do produto/peça em estoque.</td></tr>
-            <tr><td>NM_PRODUTO</td><td>varchar(120)</td><td>Sim</td><td>Nome comercial do item.</td></tr>
-            <tr><td>TP_CATEGORIA</td><td>varchar(30)</td><td>Sim</td><td>Classificação da mercadoria em estoque.</td></tr>
-            <tr><td>VR_PRECO_VENDA</td><td>float</td><td>Sim</td><td>Preço de tabela para venda no balcão.</td></tr>
-            <tr><td>VR_PRECO_CUSTO</td><td>float</td><td>Sim</td><td>Preço pago na aquisição da unidade.</td></tr>
-            <tr><td>QT_ESTOQUE</td><td>integer</td><td>Sim</td><td>Saldo físico de estoque na loja.</td></tr>
+            <tr><td>ID</td><td>integer</td><td>Sim (PK)</td><td>Identificador do produto/peça em estoque.</td></tr>
+            <tr><td>NOME</td><td>varchar(100)</td><td>Sim</td><td>Nome comercial do item.</td></tr>
+            <tr><td>PRECO_CUSTO</td><td>float</td><td>Sim</td><td>Preço pago na aquisição da unidade.</td></tr>
+            <tr><td>PRECO_VENDA</td><td>float</td><td>Sim</td><td>Preço de tabela para venda no balcão.</td></tr>
+            <tr><td>QUANTIDADE_ESTOQUE</td><td>integer</td><td>Sim</td><td>Saldo físico de estoque na loja.</td></tr>
+            <tr><td>CATEGORIA</td><td>varchar(50)</td><td>Sim</td><td>Classificação da mercadoria em estoque.</td></tr>
         </tbody>
     </table>
-    <div class="indices"><strong>Índices:</strong> PK ID_PRODUTO; índice secundário em NM_PRODUTO.</div>
+    <div class="indices"><strong>Índices:</strong> PK ID; índice secundário em NOME.</div>
 
     <h3>VENDAS</h3>
     <div class="notacao">
-        VENDAS = @ID_VENDA + DT_HORA + VR_TOTAL + VR_LUCRO_TOTAL + [TP_PIX | TP_DINHEIRO | TP_CREDITO | TP_DEBITO] + (ID_CLIENTE) + ID_USUARIO
+        VENDAS = @ID + DT_DATA_HORA + VR_VALOR_TOTAL + VR_LUCRO_TOTAL + [TP_PIX | TP_DINHEIRO | TP_CREDITO | TP_DEBITO]
     </div>
     <div class="leitura">
-        Leitura: ID_CLIENTE é opcional entre () para vendas avulsas de balcão; ID_USUARIO identifica o funcionário responsável pelo registro.
+        Leitura: @ID é o identificador único da transação; registra data, valores acumulados e a forma de pagamento selecionada.
     </div>
     <table>
         <thead>
@@ -290,23 +284,21 @@
             </tr>
         </thead>
         <tbody>
-            <tr><td>ID_VENDA</td><td>integer</td><td>Sim (PK)</td><td>Identificador da venda ou ordem de serviço.</td></tr>
-            <tr><td>DT_HORA</td><td>datetime</td><td>Sim</td><td>Data e hora exata do encerramento do atendimento.</td></tr>
-            <tr><td>VR_TOTAL</td><td>float</td><td>Sim</td><td>Valor total cobrado na operação.</td></tr>
-            <tr><td>VR_LUCRO_TOTAL</td><td>float</td><td>Sim</td><td>Lucro total gerado na operação.</td></tr>
-            <tr><td>TP_FORMA_PAGAMENTO</td><td>varchar(30)</td><td>Sim (escolha)</td><td>Forma de pagamento utilizada pelo cliente.</td></tr>
-            <tr><td>ID_CLIENTE</td><td>integer</td><td>Não (FK)</td><td>Referência ao cliente titular (opcional no balcão).</td></tr>
-            <tr><td>ID_USUARIO</td><td>integer</td><td>Sim (FK)</td><td>Referência ao vendedor/técnico autor da venda.</td></tr>
+            <tr><td>ID</td><td>integer</td><td>Sim (PK)</td><td>Identificador da venda ou ordem de serviço.</td></tr>
+            <tr><td>DATA_HORA</td><td>datetime</td><td>Sim</td><td>Data e hora exata do encerramento do atendimento.</td></tr>
+            <tr><td>VALOR_TOTAL</td><td>float</td><td>Sim</td><td>Valor total cobrado na operação.</td></tr>
+            <tr><td>LUCRO_TOTAL</td><td>float</td><td>Sim</td><td>Lucro total gerado na operação.</td></tr>
+            <tr><td>FORMA_PAGAMENTO</td><td>varchar(50)</td><td>Sim (escolha)</td><td>Forma de pagamento utilizada pelo cliente.</td></tr>
         </tbody>
     </table>
-    <div class="indices"><strong>Índices:</strong> PK ID_VENDA; FK ID_CLIENTE; FK ID_USUARIO; índice em DT_HORA.</div>
+    <div class="indices"><strong>Índices:</strong> PK ID; índice em DATA_HORA.</div>
 
-    <h3>ITENS_VENDA</h3>
+    <h3>ATRIBUTOS DE RELACIONAMENTO &lt;COMPOE&gt; (VENDAS ↔ PRODUTOS)</h3>
     <div class="notacao">
-        ITENS_VENDA = @ID_ITEM_VENDA + QT_VENDIDA + VR_UNITARIO_APLICADO + VR_CUSTO_APLICADO + ID_VENDA + ID_PRODUTO
+        COMPOE = QT_QUANTIDADE + VR_PRECO_UNITARIO_APLICADO + VR_PRECO_CUSTO_APLICADO
     </div>
     <div class="leitura">
-        Leitura: Entidade associativa; grava os custos e valores praticados na hora da venda para auditoria financeira imutável.
+        Leitura: Atributos contidos no losango do relacionamento N:M &lt;Compoe&gt;; congelam a quantidade e os valores praticados no momento exato da venda.
     </div>
     <table>
         <thead>
@@ -318,48 +310,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr><td>ID_ITEM_VENDA</td><td>integer</td><td>Sim (PK)</td><td>Identificador do item da venda.</td></tr>
-            <tr><td>QT_VENDIDA</td><td>integer</td><td>Sim</td><td>Quantidade de unidades comercializadas.</td></tr>
-            <tr><td>VR_UNITARIO_APLICADO</td><td>float</td><td>Sim</td><td>Preço cobrado por unidade no momento da venda.</td></tr>
-            <tr><td>VR_CUSTO_APLICADO</td><td>float</td><td>Sim</td><td>Custo unitário congelado no momento da venda.</td></tr>
-            <tr><td>ID_VENDA</td><td>integer</td><td>Sim (FK)</td><td>Referência à venda de origem.</td></tr>
-            <tr><td>ID_PRODUTO</td><td>integer</td><td>Sim (FK)</td><td>Referência ao produto/peça comercializado.</td></tr>
+            <tr><td>QUANTIDADE</td><td>integer</td><td>Sim</td><td>Quantidade de unidades comercializadas do produto na venda.</td></tr>
+            <tr><td>PRECO_UNITARIO_APLICADO</td><td>float</td><td>Sim</td><td>Preço cobrado por unidade no momento da venda.</td></tr>
+            <tr><td>PRECO_CUSTO_APLICADO</td><td>float</td><td>Sim</td><td>Custo unitário do produto congelado no momento da venda.</td></tr>
         </tbody>
     </table>
-    <div class="indices"><strong>Índices:</strong> PK ID_ITEM_VENDA; FK ID_VENDA; FK ID_PRODUTO.</div>
-
-    <h3>HISTORICO_PRECOS</h3>
-    <div class="notacao">
-        HISTORICO_PRECOS = @ID_HISTORICO + ID_PRODUTO + ID_USUARIO + VR_CUSTO_ANTIGO + VR_CUSTO_NOVO + VR_VENDA_ANTIGO + VR_VENDA_NOVO + DT_ALTERACAO
-    </div>
-    <div class="leitura">
-        Leitura: Entidade de auditoria; armazena o histórico imutável das mudanças de valores nos produtos.
-    </div>
-    <table>
-        <thead>
-            <tr>
-                <th>Atributo</th>
-                <th>Tipo Físico</th>
-                <th>Obrigatório</th>
-                <th>Significado e Relevância</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><td>ID_HISTORICO</td><td>integer</td><td>Sim (PK)</td><td>Identificador do registro de alteração de preço.</td></tr>
-            <tr><td>ID_PRODUTO</td><td>integer</td><td>Sim (FK)</td><td>Referência ao produto alterado.</td></tr>
-            <tr><td>ID_USUARIO</td><td>integer</td><td>Sim (FK)</td><td>Referência ao funcionário autor da alteração.</td></tr>
-            <tr><td>VR_CUSTO_ANTIGO</td><td>float</td><td>Sim</td><td>Preço de custo anterior à alteração.</td></tr>
-            <tr><td>VR_CUSTO_NOVO</td><td>float</td><td>Sim</td><td>Novo preço de custo.</td></tr>
-            <tr><td>VR_VENDA_ANTIGO</td><td>float</td><td>Sim</td><td>Preço de tabela anterior à alteração.</td></tr>
-            <tr><td>VR_VENDA_NOVO</td><td>float</td><td>Sim</td><td>Novo preço de tabela.</td></tr>
-            <tr><td>DT_ALTERACAO</td><td>datetime</td><td>Sim</td><td>Data e hora exata da modificação.</td></tr>
-        </tbody>
-    </table>
-    <div class="indices"><strong>Índices:</strong> PK ID_HISTORICO; FK ID_PRODUTO; FK ID_USUARIO.</div>
 
     <h3>MOVIMENTACOES_ESTOQUE</h3>
     <div class="notacao">
-        MOVIMENTACOES_ESTOQUE = @ID_MOVIMENTACAO + ID_PRODUTO_MOV + ID_USUARIO_MOV + [TP_ENTRADA | TP_SAIDA_MANUAL | TP_AJUSTE | TP_PERDA] + QT_MOVIMENTADA + DT_MOVIMENTACAO + (DS_OBSERVACAO)
+        MOVIMENTACOES_ESTOQUE = @ID + [TP_ENTRADA | TP_SAIDA_MANUAL | TP_AJUSTE | TP_PERDA] + DS_OBSERVACAO + DT_DATA_MOVIMENTACAO + QT_QUANTIDADE_MOV
     </div>
     <div class="leitura">
         Leitura: Registra o fluxo de entrada e saída física de mercadorias no inventário da loja.
@@ -374,19 +333,44 @@
             </tr>
         </thead>
         <tbody>
-            <tr><td>ID_MOVIMENTACAO</td><td>integer</td><td>Sim (PK)</td><td>Identificador do lançamento de estoque.</td></tr>
-            <tr><td>ID_PRODUTO_MOV</td><td>integer</td><td>Sim (FK)</td><td>Referência ao produto movimentado.</td></tr>
-            <tr><td>ID_USUARIO_MOV</td><td>integer</td><td>Sim (FK)</td><td>Referência ao responsável pelo lançamento.</td></tr>
-            <tr><td>TP_MOVIMENTACAO</td><td>varchar(30)</td><td>Sim (escolha)</td><td>Natureza da movimentação no estoque.</td></tr>
-            <tr><td>QT_MOVIMENTADA</td><td>integer</td><td>Sim</td><td>Volume físico movimentado.</td></tr>
-            <tr><td>DT_MOVIMENTACAO</td><td>datetime</td><td>Sim</td><td>Data e hora do lançamento.</td></tr>
-            <tr><td>DS_OBSERVACAO</td><td>text</td><td>Não</td><td>Justificativa do lançamento no inventário.</td></tr>
+            <tr><td>ID</td><td>integer</td><td>Sim (PK)</td><td>Identificador do lançamento de estoque.</td></tr>
+            <tr><td>TIPO_MOVIMENTACAO</td><td>varchar(30)</td><td>Sim (escolha)</td><td>Natureza da movimentação no estoque.</td></tr>
+            <tr><td>OBSERVACAO</td><td>varchar(255)</td><td>Não</td><td>Justificativa do lançamento no inventário.</td></tr>
+            <tr><td>DATA_MOVIMENTACAO</td><td>datetime</td><td>Sim</td><td>Data e hora do lançamento.</td></tr>
+            <tr><td>QUANTIDADE_MOV</td><td>integer</td><td>Sim</td><td>Volume físico movimentado.</td></tr>
         </tbody>
     </table>
-    <div class="indices"><strong>Índices:</strong> PK ID_MOVIMENTACAO; FK ID_PRODUTO_MOV; FK ID_USUARIO_MOV.</div>
+    <div class="indices"><strong>Índices:</strong> PK ID.</div>
+
+    <h3>HISTORICO_PRECOS</h3>
+    <div class="notacao">
+        HISTORICO_PRECOS = @ID + DT_DATA_ALTERACAO + VR_PRECO_CUSTO_NOVO + VR_PRECO_VENDA_NOVO + VR_PRECO_CUSTO_ANTIGO + VR_PRECO_VENDA_ANTIGO
+    </div>
+    <div class="leitura">
+        Leitura: Entidade de auditoria; armazena o histórico imutável das mudanças de valores nos produtos.
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Atributo</th>
+                <th>Tipo Físico</th>
+                <th>Obrigatório</th>
+                <th>Significado e Relevância</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>ID</td><td>integer</td><td>Sim (PK)</td><td>Identificador do registro de alteração de preço.</td></tr>
+            <tr><td>DATA_ALTERACAO</td><td>datetime</td><td>Sim</td><td>Data e hora exata da modificação.</td></tr>
+            <tr><td>PRECO_CUSTO_NOVO</td><td>float</td><td>Sim</td><td>Novo preço de custo atualizado.</td></tr>
+            <tr><td>PRECO_VENDA_NOVO</td><td>float</td><td>Sim</td><td>Novo preço de venda atualizado.</td></tr>
+            <tr><td>PRECO_CUSTO_ANTIGO</td><td>float</td><td>Sim</td><td>Preço de custo anterior à alteração.</td></tr>
+            <tr><td>PRECO_VENDA_ANTIGO</td><td>float</td><td>Sim</td><td>Preço de tabela anterior à alteração.</td></tr>
+        </tbody>
+    </table>
+    <div class="indices"><strong>Índices:</strong> PK ID.</div>
 
     <h2>5. Log de Acesso (Metadado Operacional)</h2>
-    <p>As sete tabelas ficam sob o mesmo mecanismo de auditoria do SGBD: o plugin <code>audit_log</code> do MySQL 8, configurado para gravar em formato JSON no caminho definido por <code>audit_log_file</code> (variável de sistema, sob <code>$HOME</code> neste ambiente — nunca sob <code>/tmp</code>). Na ausência do plugin, a alternativa é o log geral (<code>general_log=ON</code>, <code>log_output=TABLE</code>), consultável em <code>mysql.general_log</code>. Retenção e rotação do log seguem política própria, independente da retenção dos dados de negócio.</p>
+    <p>As seis tabelas ficam sob o mesmo mecanismo de auditoria do SGBD: o plugin <code>audit_log</code> do MySQL 8, configurado para gravar em formato JSON no caminho definido por <code>audit_log_file</code> (variável de sistema, sob <code>$HOME</code> neste ambiente — nunca sob <code>/tmp</code>). Na ausência do plugin, a alternativa é o log geral (<code>general_log=ON</code>, <code>log_output=TABLE</code>), consultável em <code>mysql.general_log</code>. Retenção e rotação do log seguem política própria, independente da retenção dos dados de negócio.</p>
 
     <h2>6. Acesso por Operação e Conformidade com a LGPD (Metadado Administrativo)</h2>
     <table>
@@ -408,7 +392,7 @@
                 <td>Nenhum papel — apenas anonimização ao fim da retenção</td>
             </tr>
             <tr>
-                <td>USUARIOS</td>
+                <td>FUNCIONARIO</td>
                 <td>Gerente, Vendedor</td>
                 <td>Gerente</td>
                 <td>Gerente</td>
@@ -429,10 +413,10 @@
                 <td>Nenhum papel</td>
             </tr>
             <tr>
-                <td>ITENS_VENDA</td>
-                <td>Vendedor, Técnico, Gerente</td>
-                <td>Vendedor, Técnico</td>
-                <td>Nenhum papel</td>
+                <td>MOVIMENTACOES_ESTOQUE</td>
+                <td>Gerente, Vendedor</td>
+                <td>Gerente, Vendedor</td>
+                <td>Nenhum papel (Imutável)</td>
                 <td>Nenhum papel</td>
             </tr>
             <tr>
@@ -442,17 +426,10 @@
                 <td>Nenhum papel (Imutável)</td>
                 <td>Nenhum papel</td>
             </tr>
-            <tr>
-                <td>MOVIMENTACOES_ESTOQUE</td>
-                <td>Gerente, Vendedor</td>
-                <td>Gerente, Vendedor</td>
-                <td>Nenhum papel (Imutável)</td>
-                <td>Nenhum papel</td>
-            </tr>
         </tbody>
     </table>
 
-    <p>A tabela <code>CLIENTES</code> armazena dados pessoais (Nome, CPF/CNPJ, Telefone, E-mail, Endereço), enquadrados no artigo 5º, I da LGPD (Lei nº 13.709/2018). O tratamento ampara-se na execução de contrato (art. 7º, V) e no cumprimento de obrigação legal ou regulatória para emissão de notas fiscais (art. 7º, II). O acesso é restrito aos papéis operacionais da empresa, e toda transação fica registrada no log de acesso (§5), o que sustenta o princípio de responsabilização (art. 6º, X). Ao fim do prazo legal de guarda fiscal, os dados são anonimizados, preservando a integridade das estatísticas financeiras de vendas sem expor o titular do dado.</p>
+    <p>A tabela <code>CLIENTES</code> armazena dados pessoais (Nome/Razão Social, CPF/CNPJ, Telefone, E-mail, Endereço), enquadrados no artigo 5º, I da LGPD (Lei nº 13.709/2018). O tratamento ampara-se na execução de contrato (art. 7º, V) e no cumprimento de obrigação legal ou regulatória para emissão de notas fiscais (art. 7º, II). O acesso é restrito aos papéis operacionais da empresa, e toda transação fica registrada no log de acesso (§5), o que sustenta o princípio de responsabilização (art. 6º, X). Ao fim do prazo legal de guarda fiscal, os dados são anonimizados, preservando a integridade das estatísticas financeiras de vendas sem expor o titular do dado.</p>
 
 </body>
 </html>
