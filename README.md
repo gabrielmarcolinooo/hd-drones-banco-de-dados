@@ -29,7 +29,7 @@
   - **Endereço Completo:** Cidade Líder, Zona Leste, São Paulo - SP.
   - **Forma de contato:** Telefone/WhatsApp empresarial.
   - **Atividades e Acesso de Campo:** O integrante do grupo Gabriel de Oliveira Silva trabalhava na própria organização, o que garantiu acesso direto e diário ao proprietário, às rotinas operacionais, ao fluxo do caixa (PDV) e ao levantamento de ordens de serviço (OS).
-  - **Comprovação Visual:** Foto do integrante atuando no local de trabalho anexada na pasta de evidências do repositório (`/evidencias/foto_local.jpg`).
+  - **Comprovação Visual:** Foto do integrante atuando no local de trabalho anexada na pasta de evidências do repositório (`/evidencias/foto_local.JPG`).
 
 
 
