@@ -24,10 +24,14 @@
   - Bloqueios operacionais e falhas no registro unificado do histórico de compras dos clientes.
   - Ausência de histórico auditável sobre alterações de preços de custo/venda e movimentações físicas de produtos.
 - **Justificativa da escolha:** A HD Drones é uma empresa real e ativa com acesso direto garantido para pesquisa de campo, entrevistas operacionais e mapeamento de processos. Possui o porte ideal para a disciplina: não é trivial a ponto de ter poucas entidades, nem excessivamente complexa a ponto de inviabilizar a modelagem conceitual dentro do prazo do semestre.
+
 - **Evidências da organização:** 
   - **Endereço Completo:** Cidade Líder, Zona Leste, São Paulo - SP.
-  - **Forma de contato:** Telefone/WhatsApp empresarial, e-mail de atendimento comercial e presença em marketplaces.
-  - **Atividades de campo:** Visita presencial para mapeamento do fluxo do caixa (PDV) e entrevista com o responsável para levantamento do fluxo de peças e ordem de serviço.
+  - **Forma de contato:** Telefone/WhatsApp empresarial.
+  - **Atividades e Acesso de Campo:** O integrante do grupo Gabriel de Oliveira Silva trabalhava na própria organização, o que garantiu acesso direto e diário ao proprietário, às rotinas operacionais, ao fluxo do caixa (PDV) e ao levantamento de ordens de serviço (OS).
+  - **Comprovação Visual:** Foto do integrante atuando no local de trabalho anexada na pasta de evidências do repositório (`/evidencias/foto_local.jpg`).
+
+
 
 ---
 
