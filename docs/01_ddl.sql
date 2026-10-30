@@ -1,4 +1,4 @@
-- 01_ddl.sql — HD Drones (MySQL 8 / InnoDB)
+-- 01_ddl.sql — HD Drones (MySQL 8 / InnoDB)
 DROP DATABASE IF EXISTS hd_drones;
 CREATE DATABASE hd_drones CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE hd_drones;
