@@ -1,4 +1,4 @@
--- 02_triggers.sql — regras de negócio (executar após 01_ddl.sql)
+- 02_triggers.sql — regras de negócio (executar após 01_ddl.sql)
 USE hd_drones;
 DELIMITER $$
 
