@@ -1,1 +1,144 @@
-Histórico do Projeto: Sistema Comercial HD Drones (Banco de Dados)1. Contexto e OrganizaçãoOrganização: HD Drones — Assistência Técnica e Comércio de Drones e Acessórios.Natureza: Empresa de pequeno porte (Sociedade Unipessoal / MEI) com fins lucrativos.Localização: Bairro Cidade Líder, Zona Leste, São Paulo - SP.Operação: Venda de drones novos/seminovos, peças de reposição, acessórios e ordens de serviço (OS) de manutenção técnica. Média diária de 10 a 25 atendimentos.Evidência de Campo: Acesso direto via integrante do grupo (Gabriel Marcolino) que trabalha no local. Foto presencial no estabelecimento inclusa como evidência.2. Evolução da Modelagem (Entrega 1 $\rightarrow$ Entrega 2)Modelo Conceitual (DER):Entidades principais: Clientes, Funcionario, Produtos, Vendas, Movimentacoes_Estoque e Historico_Precos.Relacionamentos e Cardinalidades:Clientes <Realiza> Vendas (0,n) : (0,1)Vendas <Compoe> Produtos (1,n) : (0,n) (Relacionamento N:M com atributos associativos: quantidade, preco_unitario_aplicado, preco_custo_aplicado).Produtos <Gera> Movimentacoes_Estoque (0,n) : (1,1)Produtos <Historiza> Historico_Precos (0,n) : (1,1)Funcionario <Registra> Vendas (0,n) : (1,1)Funcionario <Autoriza> Movimentacoes_Estoque (0,n) : (1,1)Funcionario <Altera> Historico_Precos (0,n) : (1,1)Modelo Lógico (Tabelas e Normalização):Tradução direta para 3ª Forma Normal (1FN, 2FN e 3FN).Conversão do relacionanto N:M no losango <Compoe> para a tabela associativa Compoe com Chave Primária Composta (venda_id + produto_id).Inclusão de Chaves Estrangeiras (FK) explícitas apontando para Clientes, Funcionario e Produtos.Definição rigorosa dos tipos de dados: DATETIME para data/hora, DECIMAL(10,2) (ou FLOAT) para valores monetários e VARCHAR para textos/documentos.Documentação de Suporte:README.md: Estruturado no modelo oficial da disciplina, cobrindo caracterização da empresa, processos de negócio, requisitos (RF/RNF), regras de negócio (RNxx), justificativas técnicas, arquitetura analítica de BI/IA (KPIs) e transparência no uso de IA.dicionario_dados.html: Arquivo HTML formatado seguindo rigorosamente a notação formal do professor (=, +, (), [|], @, **), detalhando entidades, atributos, tipos físicos, cardinalidades, papéis de acesso, log de auditoria e conformidade com a LGPD.3. Feedback da Avaliação da Entrega 1 (Pontos de Correção)Recebemos a correção da Entrega 1 (nota parcial reduzida por fatores multiplicadores) com as seguintes observações para sanar na Entrega 2:Endereço e Evidências: Faltava o endereço físico completo (com rua/número) e o upload da foto de campo na pasta evidencias/ do GitHub (remover os fatores de desconto $\times 0,5$ e $\times 0,85$).Escopo dos Processos: Expandir para justificar o ciclo de Compras/Fornecedores e o fluxo detalhado de Ordens de Serviço (orçamento, aprovação, execução, garantia).Erros no Dicionário HTML: Corrigir nomenclaturas na notação de expressões, trocar valores monetários para DECIMAL/FLOAT e remover frases genéricas de script de IA.Script SQL & Massa de Dados: Criar script único .sql com dados fictícios variados (respeitando LGPD) cobrindo vendas, movimentações, históricos e consultas gerenciais/auditoria.4. Escopo Atual e Próximos Passos na Entrega 2Atuando como software house, a Entrega 2 exige consolidar tudo exclusivamente na branch main do repositório:Revisão do Relatório Técnico (README.md): Tabela de rastreabilidade de problemas vs. KPIs vs. Queries SQL; justificativa de escopo; normalização.Implementação SQL (docs/script.sql): Script executável no MySQL 8 com DDL (CREATE TABLE), DML (INSERT INTO com massa de dados realista), Queries Gerenciais (G01, G02...) e Queries de Auditoria (A01, A02...).Organização do Repositório GitHub: Manter arquivos limpos em docs/, evidencias/ e levantamento/, com histórico de commits equilibrado entre os integrantes do grupo.Pitch Corporativo: Apresentação de 8 minutos com slides focados no problema, solução, demonstração do SQL ao vivo e potencial de BI/IA.
+DROP DATABASE hd_drones;
+CREATE DATABASE hd_drones;
+USE hd_drones;
+
+CREATE TABLE Clientes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome_razao VARCHAR(150) NOT NULL,
+    cpf_cnpj VARCHAR(20) NOT NULL UNIQUE,
+    telefone VARCHAR(20) NOT NULL,
+    email VARCHAR(100),
+    endereco VARCHAR(255)
+) ENGINE=InnoDB;
+
+CREATE TABLE Fornecedores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    razao_social VARCHAR(150) NOT NULL,
+    cnpj VARCHAR(20) NOT NULL UNIQUE,
+    telefone VARCHAR(20) NOT NULL,
+    email VARCHAR(100)
+) ENGINE=InnoDB;
+
+CREATE TABLE Funcionario (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cargo VARCHAR(50) NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE Produtos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(150) NOT NULL,
+    preco_venda DECIMAL(10, 2) NOT NULL,
+    categoria ENUM('Drones', 'Baterias', 'Acessórios', 'Peças') NOT NULL,
+    quantidade_estoque INT NOT NULL DEFAULT 0,
+    preco_custo DECIMAL(10, 2) NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE Vendas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
+    valor_total DECIMAL(10, 2) DEFAULT 0.00,
+    lucro_total DECIMAL(10, 2) DEFAULT 0.00,
+    forma_pagamento ENUM('Pix', 'Dinheiro', 'Cartão de Crédito', 'Cartão de Débito') NOT NULL,
+    id_cliente INT NULL, -- Opcional na venda de balcão (RN03)
+    id_funcionario INT NOT NULL,
+    CONSTRAINT fk_vendas_clientes FOREIGN KEY (id_cliente) REFERENCES Clientes(id) ON DELETE RESTRICT,
+    CONSTRAINT fk_vendas_funcionario FOREIGN KEY (id_funcionario) REFERENCES Funcionario(id) ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+CREATE TABLE Compoe_Venda (
+    id_venda INT NOT NULL,
+    id_produto INT NOT NULL,
+    quantidade INT NOT NULL CHECK (quantidade > 0),
+    preco_unitario_aplicado DECIMAL(10, 2) NOT NULL,
+    preco_custo_aplicado DECIMAL(10, 2) NOT NULL,
+    PRIMARY KEY (id_venda, id_produto),
+    CONSTRAINT fk_compoev_venda FOREIGN KEY (id_venda) REFERENCES Vendas(id) ON DELETE CASCADE,
+    CONSTRAINT fk_compoev_produto FOREIGN KEY (id_produto) REFERENCES Produtos(id) ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+CREATE TABLE Ordem_Servico (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    aparelho_drone VARCHAR(100) NOT NULL,
+    defeito_relatado TEXT NOT NULL,
+    status ENUM('Orçamento', 'Aprovado', 'Em Manutenção', 'Concluído', 'Entregue com Garantia', 'Cancelado') DEFAULT 'Orçamento',
+    valor_mao_obra DECIMAL(10, 2) DEFAULT 0.00,
+    valor_pecas DECIMAL(10, 2) DEFAULT 0.00,
+    valor_total DECIMAL(10, 2) DEFAULT 0.00,
+    data_abertura DATETIME DEFAULT CURRENT_TIMESTAMP,
+    data_conclusao DATETIME NULL,
+    prazo_garantia_dias INT DEFAULT 90, -- CDC Exigência Legal
+    id_cliente INT NOT NULL, -- OBRIGATÓRIO: Toda OS pertence a um cliente
+    id_tecnico INT NOT NULL,
+    CONSTRAINT fk_os_cliente FOREIGN KEY (id_cliente) REFERENCES Clientes(id) ON DELETE RESTRICT,
+    CONSTRAINT fk_os_tecnico FOREIGN KEY (id_tecnico) REFERENCES Funcionario(id) ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+CREATE TABLE Pecas_OS (
+    id_os INT NOT NULL,
+    id_produto INT NOT NULL,
+    quantidade INT NOT NULL CHECK (quantidade > 0),
+    preco_unitario_aplicado DECIMAL(10, 2) NOT NULL,
+    PRIMARY KEY (id_os, id_produto),
+    CONSTRAINT fk_pecasos_os FOREIGN KEY (id_os) REFERENCES Ordem_Servico(id) ON DELETE CASCADE,
+    CONSTRAINT fk_pecasos_produto FOREIGN KEY (id_produto) REFERENCES Produtos(id) ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+CREATE TABLE Movimentacoes_Estoque (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_produto INT NOT NULL,
+    id_funcionario INT NOT NULL,
+    id_fornecedor INT NULL,
+    quantidade_mov INT NOT NULL,
+    observacao VARCHAR(255),
+    data_movimentacao DATETIME DEFAULT CURRENT_TIMESTAMP,
+    tipo_movimentacao ENUM('Entrada Compra', 'Saída Venda', 'Uso em OS', 'Ajuste Inventário', 'Perda') NOT NULL,
+    CONSTRAINT fk_mov_produto FOREIGN KEY (id_produto) REFERENCES Produtos(id) ON DELETE CASCADE,
+    CONSTRAINT fk_mov_funcionario FOREIGN KEY (id_funcionario) REFERENCES Funcionario(id) ON DELETE RESTRICT,
+    CONSTRAINT fk_mov_fornecedor FOREIGN KEY (id_fornecedor) REFERENCES Fornecedores(id) ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+INSERT INTO Clientes (nome_razao, cpf_cnpj, telefone, email, endereco) VALUES
+('João da Silva', '111.222.333-44', '(11) 98888-1111', 'joao@email.com', 'Rua das Flores, 123 - SP'),
+('Empresa Fly Film LTDA', '12.345.678/0001-90', '(11) 97777-2222', 'contato@flyfilm.com', 'Av. Paulista, 1000 - SP');
+
+INSERT INTO Fornecedores (razao_social, cnpj, telefone, email) VALUES
+('DJI Brasil Importadora LTDA', '00.111.222/0001-33', '(11) 3333-0000', 'compras@djibrasil.com'),
+('Peças e Acessórios Eletrônicos SP', '44.555.666/0001-77', '(11) 2222-1111', 'vendas@pecaseletronicas.com');
+
+INSERT INTO Funcionario (nome, cargo) VALUES
+('Carlos Vendedor', 'Vendedor'),
+('Mariana Técnica', 'Técnica de Manutenção'),
+('Roberto Gerente', 'Gerente');
+
+INSERT INTO Produtos (nome, categoria, preco_venda, quantidade_estoque, preco_custo) VALUES
+('Drone DJI Mini 3 Pro', 'Drones', 5000.00, 5, 3500.00),
+('Bateria Inteligente DJI Mini 3', 'Baterias', 600.00, 10, 380.00),
+('Cabo Flat Gimbal Mavic 2', 'Peças', 150.00, 8, 45.00);
+
+INSERT INTO Vendas (valor_total, lucro_total, forma_pagamento, id_cliente, id_funcionario) VALUES
+(5600.00, 1720.00, 'Pix', 1, 1);
+
+INSERT INTO Compoe_Venda (id_venda, id_produto, quantidade, preco_unitario_aplicado, preco_custo_aplicado) VALUES
+(1, 1, 1, 5000.00, 3500.00),
+(1, 2, 1, 600.00, 380.00);
+
+INSERT INTO Ordem_Servico (aparelho_drone, defeito_relatado, status, valor_mao_obra, valor_pecas, valor_total, id_cliente, id_tecnico) VALUES
+('DJI Mavic 2 Pro', 'Queda de altitude e cabo flat partido', 'Concluído', 300.00, 150.00, 450.00, 2, 2);
+
+INSERT INTO Pecas_OS (id_os, id_produto, quantidade, preco_unitario_aplicado) VALUES
+(1, 3, 1, 150.00);
+
+
+-- Relatório de Ordens de Serviço por Status e Faturamento
+SELECT 
+    status,
+    COUNT(id) AS Qtd_OS,
+    SUM(valor_mao_obra) AS Faturamento_Mao_Obra,
+    SUM(valor_pecas) AS Faturamento_Pecas,
+    SUM(valor_total) AS Faturamento_Total_OS
+FROM Ordem_Servico
+GROUP BY status;
+
+-- Garantir que nenhuma OS exista sem Cliente associado
+SELECT id, aparelho_drone, status FROM Ordem_Servico WHERE id_cliente IS NULL;
