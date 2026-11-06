@@ -32,7 +32,7 @@
 * **Evidências da organização:**
 * **Endereço Completo:** Rua Santa Ifigênia, 480, Loja 22 — Centro Histórico de São Paulo, São Paulo - SP, CEP 01207-000.
 * **Forma de contato:** Telefone/WhatsApp empresarial: (11) 95238-0058| E-mail: contato@hddrones.com.br.
-* **Atividades e Acesso de Campo:** O integrante do grupo Gabriel de Oliveira Silva trabalha na própria organização, garantindo acesso direto e diário ao proprietário, às rotinas operacionais, ao fluxo do caixa (PDV) e ao levantamento das ordens de serviço (OS).
+* **Atividades e Acesso de Campo:** O integrante do grupo Gabriel de Oliveira Silva trabalhou na própria organização, garantindo acesso direto e diário ao proprietário, às rotinas operacionais, ao fluxo do caixa (PDV) e ao levantamento das ordens de serviço (OS).
 * **Comprovação Visual:** Foto da fachada da loja anexada na pasta de evidências do repositório ![Foto no Local](./evidencias/foto_fachada_campo.jpg).
 
 
