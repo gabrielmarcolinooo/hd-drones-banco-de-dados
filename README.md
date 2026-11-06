@@ -6,7 +6,7 @@
 
 ## Metadados
 
-* **Nomes dos alunos e RGM:**
+* **Nomes dos alunos, RGM e Git:**
 * Adriano Salviano Marcal | RGM: 48188697 | adrionomarccal
 * Arthur Tigre Francisco | RGM: 48201413 | tigrea021-ai
 * Gabriel de Oliveira Silva | RGM: 48203068 | Gabriel-Olvr
