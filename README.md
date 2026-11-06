@@ -7,11 +7,13 @@
 ## Metadados
 
 * **Nomes dos alunos e RGM:**
-* Adriano Salviano Marcal | RGM: 48188697
-* Arthur Tigre Francisco | RGM: 48201413
-* Gabriel de Oliveira Silva | RGM: 48203068
-* Gabriel Marcolino de Oliveira | RGM: 48226718
-* Giovanni dos Santos Silva | RGM: 48159077
+* Adriano Salviano Marcal | RGM: 48188697 | adrionomarccal
+* Arthur Tigre Francisco | RGM: 48201413 | tigrea021-ai
+* Gabriel de Oliveira Silva | RGM: 48203068 | Gabriel-Olvr
+* Gabriel Marcolino de Oliveira | RGM: 48226718 | gabrielmarcolinooo
+
+* Giovanni dos Santos Silva | RGM: 48159077 |giovannisantos458-internauta
+
 
 
 
