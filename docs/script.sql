@@ -107,9 +107,21 @@ CREATE TABLE Movimentacoes_Estoque (
     CONSTRAINT fk_mov_fornecedor FOREIGN KEY (id_fornecedor) REFERENCES Fornecedores(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
+CREATE TABLE Historico_Precos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_produto INT NOT NULL,
+    id_funcionario INT NOT NULL,
+    data_alteracao DATETIME DEFAULT CURRENT_TIMESTAMP,
+    preco_custo_novo DECIMAL(10,2) NOT NULL,
+    preco_venda_novo DECIMAL(10,2) NOT NULL,
+    preco_custo_antigo DECIMAL(10,2) NOT NULL,
+    preco_venda_antigo DECIMAL(10,2) NOT NULL,
+    CONSTRAINT fk_hist_produto FOREIGN KEY (id_produto) REFERENCES Produtos(id) ON DELETE CASCADE,
+    CONSTRAINT fk_hist_funcionario FOREIGN KEY (id_funcionario) REFERENCES Funcionario(id) ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
 -- ------------------------------------------------------------
 -- 2. CARGA DE MASSA DE DADOS FICTÍCIA (DML)
--- (15 a 25 atendimentos/dia, 150 a 300 itens em catálogo).
 -- ------------------------------------------------------------
  
 -- INSERT 01: Carga de Clientes
@@ -199,7 +211,8 @@ INSERT INTO Clientes (nome_razao, cpf_cnpj, telefone, email, endereco) VALUES
 -- 2. FORNECEDORES (6 registros)
 -- ============================================================================
 INSERT INTO Fornecedores (razao_social, cnpj, telefone, email) VALUES
-('Grupo Multilaser S.A.', '59.717.553/0001-02', '(11) 3198-0004', 'central.solucoes@grupomultilaser.com.br')
+('Grupo Multilaser S.A.', '59.717.553/0001-02', '(11) 3198-0004', 'central.solucoes@grupomultilaser.com.br');
+
 -- ============================================================================
 -- 3. FUNCIONÁRIOS (8 registros)
 -- ============================================================================
@@ -400,7 +413,7 @@ INSERT INTO Movimentacoes_Estoque (id_produto, id_funcionario, id_fornecedor, qu
 (5, 3, NULL, -3, 'Hélices avariadas em teste de bancada', '2026-08-28 11:00:00', 'Perda'),
 (2, 3, NULL, -1, 'Bateria com vício de fabricação descartada', '2026-09-14 16:00:00', 'Perda'),
 (6, 3, NULL, 5, 'Ajuste de inventário - Contagem física superior', '2026-09-30 17:00:00', 'Ajuste Inventário'),
-(11, 3, NULL, 4, 'Ajuste de inventário - Correção de saldo', '2026-10-15 11:30:00', 'Ajuste Inventário');
+(11, 3, NULL, 4, 'Ajuste de inventário - Correção de saldo', '2026-10-15 11:30:00', 'Ajuste Inventário'),
 (7, 3, 4, 30, 'NF 31045 - Reposição de braços e motores DJI', '2026-10-26 10:00:00', 'Entrada Compra'),
 (1, 4, NULL, -1, 'Saída referente à Venda #21', '2026-10-28 14:15:00', 'Saída Venda'),
 (14, 2, NULL, -1, 'Peça aplicada na OS #26', '2026-10-29 15:40:00', 'Uso em OS'),
@@ -422,6 +435,28 @@ INSERT INTO Historico_Precos (id_produto, id_funcionario, data_alteracao, preco_
 (18, 3, '2026-09-25 09:45:00', 850.00, 1450.00, 800.00, 1350.00),
 (20, 3, '2026-10-05 13:20:00', 1900.00, 2900.00, 1800.00, 2750.00);
 
+-- ==========================================
+-- 11. COMANDOS DE ATUALIZAÇÃO (UPDATE)
+-- ==========================================
+-- Atualizando o preço de um drone específico e o status de uma OS
+UPDATE Produtos 
+SET preco_venda = 4850.00 
+WHERE id = 1;
+
+UPDATE Ordem_Servico 
+SET status = 'Concluído', data_conclusao = CURRENT_DATE 
+WHERE id = 3;
+
+-- ==========================================
+-- 12. COMANDOS DE EXCLUSÃO (DELETE)
+-- ==========================================
+-- Removendo um orçamento/venda cancelada que ainda não foi faturada
+DELETE FROM Compoe_Venda 
+WHERE id_venda = 5;
+
+DELETE FROM Vendas 
+WHERE id = 5;
+
 -- ------------------------------------------------------------
 -- 3. CONSULTAS GERENCIAIS (G01, G02...) E DE AUDITORIA (A01...)
 -- ------------------------------------------------------------
@@ -440,7 +475,6 @@ FROM Produtos p
 LEFT JOIN Movimentacoes_Estoque m ON p.id = m.id_produto
 LEFT JOIN Fornecedores f ON m.id_fornecedor = f.id;
 
-
 -- G02 — Qual o faturamento total acumulado e a distribuição por status das Ordens de Serviço?
 -- Atende: P2 (Ausência de Controle Formal de Ordens de Serviço) e KPI-02 (Faturamento de Manutenção)
 SELECT 
@@ -451,7 +485,6 @@ SELECT
     SUM(valor_total) AS Faturamento_Total_OS
 FROM Ordem_Servico
 GROUP BY status;
-
 
 -- G03 — Qual o faturamento bruto, custo total e lucro líquido apurado nas Vendas de Balcão por vendedor?
 -- Atende: P3 (Incerteza Financeira na Apuração de Margens e Comissões) e KPI-03 (Margem de Lucro)
@@ -466,7 +499,6 @@ SELECT
 FROM Vendas v
 INNER JOIN Funcionario f ON v.id_funcionario = f.id
 LEFT JOIN Clientes c ON v.id_cliente = c.id;
-
 
 -- A01 — Existe alguma Ordem de Serviço registrada sem cliente vinculado?
 -- Verifica: RN03 (Obrigatoriedade de cliente cadastrado para abertura de Ordem de Serviço)
