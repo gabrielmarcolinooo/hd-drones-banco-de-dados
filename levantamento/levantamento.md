@@ -18,7 +18,7 @@ A loja possui equipe enxuta (5 colaboradores), atendendo de 15 a 25 clientes por
 ## 2. Detalhamento das Rotinas Entrevistadas e Gargalos (`P1-P4`)
 
 ### A. Fluxo de Caixa e Vendas de Balcão (PDV) — `PR02`
-- **Rotina Atual:** Vendas diretas de acessórios (baterias, hélices, cabos) ocorrem rapidamente no balcão.
+- **Rotina Atual:** Vendas diretas de acessórios (baterias, hélices, cabos, alça de Pescoço ergonômica para controle, mala de transporte rígida impermeável, protetor de hélices) ocorrem rapidamente no balcão.
 - **Necessidade / Regra de Negócio:** Permitir vendas avulsas sem cadastro obrigatório de cliente para evitar filas (`RN03`), mas exigir o congelamento do preço de venda e custo praticados no momento da transação na tabela associativa `Compoe_Venda` (`RN02`), evitando distorções em relatórios futuros.
 
 ### B. Assistência Técnica e Ordens de Serviço (OS) — `PR03`
