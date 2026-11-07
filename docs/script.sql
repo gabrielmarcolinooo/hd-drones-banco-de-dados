@@ -211,7 +211,12 @@ INSERT INTO Clientes (nome_razao, cpf_cnpj, telefone, email, endereco) VALUES
 -- 2. FORNECEDORES (6 registros)
 -- ============================================================================
 INSERT INTO Fornecedores (razao_social, cnpj, telefone, email) VALUES
-('Grupo Multilaser S.A.', '59.717.553/0001-02', '(11) 3198-0004', 'central.solucoes@grupomultilaser.com.br');
+('Grupo Multilaser S.A.', '59.717.553/0001-02', '(11) 3198-0004', 'central.solucoes@grupomultilaser.com.br'),
+('DJI Brasil Oficial', '12.345.678/0001-90', '(11) 4000-1122', 'vendas@djibrasil.com.br'),
+('Gimbal Tech Peças', '98.765.432/0001-10', '(41) 3322-9988', 'contato@gimbaltech.com'),
+('Baterias DronePower', '11.222.333/0001-44', '(31) 3456-7890', 'pedidos@dronepower.com.br'),
+('AeroParts Importação', '55.666.777/0001-55', '(21) 2233-4455', 'import@aeroparts.com.br'),
+('FPV Racing Motors', '33.444.555/0001-66', '(19) 3232-1010', 'vendas@fpvracing.com.br');
 
 -- ============================================================================
 -- 3. FUNCIONÁRIOS (8 registros)
@@ -500,6 +505,22 @@ FROM Vendas v
 INNER JOIN Funcionario f ON v.id_funcionario = f.id
 LEFT JOIN Clientes c ON v.id_cliente = c.id;
 
+-- G04 — Qual o histórico de alterações de preços de custo e venda dos produtos ao longo do tempo?
+-- Atende: P4 (Falta de Auditoria de Compras e Histórico de Preços) e KPI-04 (Variação de Custo)
+SELECT 
+    h.id AS ID_Auditoria,
+    p.nome AS Produto,
+    f.nome AS Funcionario_Responsavel,
+    h.preco_custo_antigo,
+    h.preco_custo_novo,
+    h.preco_venda_antigo,
+    h.preco_venda_novo,
+    h.data_alteracao
+FROM Historico_Precos h
+INNER JOIN Produtos p ON h.id_produto = p.id
+INNER JOIN Funcionario f ON h.id_funcionario = f.id
+ORDER BY h.data_alteracao DESC;
+
 -- A01 — Existe alguma Ordem de Serviço registrada sem cliente vinculado?
 -- Verifica: RN03 (Obrigatoriedade de cliente cadastrado para abertura de Ordem de Serviço)
 SELECT 
@@ -509,3 +530,23 @@ SELECT
     status 
 FROM Ordem_Servico 
 WHERE id_cliente IS NULL;
+
+-- A02 — Existem produtos ou serviços aplicados com valores zerados ou negativos?
+-- Verifica: RN02 (Integridade de valores restritos pelo CHECK)
+SELECT 
+    id_venda AS ID_Transacao, 
+    id_produto, 
+    quantidade, 
+    preco_unitario_aplicado,
+    'Venda' AS Origem
+FROM Compoe_Venda 
+WHERE preco_unitario_aplicado <= 0 OR quantidade <= 0
+UNION
+SELECT 
+    id_os AS ID_Transacao, 
+    id_produto, 
+    quantidade, 
+    preco_unitario_aplicado,
+    'OS' AS Origem
+FROM Pecas_OS 
+WHERE preco_unitario_aplicado <= 0 OR quantidade <= 0;
