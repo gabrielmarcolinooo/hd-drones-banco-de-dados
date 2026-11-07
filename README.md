@@ -211,12 +211,17 @@
 
 ## 6. Modelagem Lógica e Mapeamento de Relações
 
-- **Mapeamento de Relacionamentos Lógicos:**
-  - `Clientes` (1) $\rightarrow$ (N) `Vendas`: Um cliente pode realizar zero ou várias vendas (`id_cliente` é FK opcional na tabela `Vendas`).
-  - `Clientes` (1) $\rightarrow$ (N) `Ordem_Servico`: Um cliente possui uma ou mais Ordens de Serviço (`id_cliente` é FK obrigatória na tabela `Ordem_Servico`).
-  - `Vendas` (1) $\rightarrow$ (N) `Compoe_Venda` $\leftarrow$ (1) `Produtos`: Relacionamento $N:M$ reduzido para a tabela associativa `Compoe_Venda` com chave primária composta `(id_venda, id_produto)`.
-  - `Ordem_Servico` (1) $\rightarrow$ (N) `Pecas_OS` $\leftarrow$ (1) `Produtos`: Relacionamento $N:M$ reduzido para a tabela associativa `Pecas_OS` com chave primária composta `(id_os, id_produto)`.
-  - `Fornecedores` (1) $\rightarrow$ (N) `Movimentacoes_Estoque`: Registra o fornecedor responsável pelas movimentações de entrada de estoque.
+Com base na seção da imagem fornecida, converti o mapeamento de relacionamentos lógicos numa tabela formatada em Markdown para que possa copiar e colar diretamente no seu ficheiro `README.md` do GitHub:
+
+```markdown
+| Tabela Origem | Cardinalidade | Tabela Destino | Tipo de Relação / Chave | Descrição / Regra de Negócio |
+| :--- | :---: | :--- | :--- | :--- |
+| **Clientes** | (1) $\rightarrow$ (N) | **Vendas** | Chave Estrangeira Opcional (`id_cliente`) | Um cliente pode realizar zero ou várias vendas de balcão. |
+| **Clientes** | (1) $\rightarrow$ (N) | **Ordem_Servico** | Chave Estrangeira Obrigatória (`id_cliente`) | Um cliente possui uma ou mais Ordens de Serviço registadas. |
+| **Vendas** | (1) $\rightarrow$ (N) | **Compoe_Venda** $\leftarrow$ (1) **Produtos** | Tabela Associativa (Chave Composta: `id_venda, id_produto`) | Relacionamento N:M resolvido para associar produtos vendidos às respetivas vendas. |
+| **Ordem_Servico** | (1) $\rightarrow$ (N) | **Pecas_OS** $\leftarrow$ (1) **Produtos** | Tabela Associativa (Chave Composta: `id_os, id_produto`) | Relacionamento N:M resolvido para registar as peças aplicadas em cada Ordem de Serviço. |
+| **Fornecedores** | (1) $\rightarrow$ (N) | **Movimentacoes_Estoque** | Chave Estrangeira Opcional (`id_fornecedor`) | Regista o fornecedor responsável pelas movimentações de entrada de stock. |
+```[cite: 8]
 
 ---
 
