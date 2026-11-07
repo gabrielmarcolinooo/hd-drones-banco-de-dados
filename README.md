@@ -222,7 +222,7 @@
 
 ## 7. Diagrama Lógico do Banco de Dados
 
-- O diagrama do modelo lógico encontra-se armazenado e disponível na pasta [`docs/DER_Logico.jpeg`](./docs/DER_Logico.jpeg).
+- O diagrama do modelo lógico encontra-se armazenado e disponível na pasta [`docs/DER_Logico.jpeg`](./docs/DER_Logico.png).
 
 ---
 
