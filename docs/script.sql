@@ -199,12 +199,7 @@ INSERT INTO Clientes (nome_razao, cpf_cnpj, telefone, email, endereco) VALUES
 -- 2. FORNECEDORES (6 registros)
 -- ============================================================================
 INSERT INTO Fornecedores (razao_social, cnpj, telefone, email) VALUES
-('DJI Brasil Importadora LTDA', '00.111.222/0001-33', '(11) 3333-0000', 'compras@djibrasil.com'),
-('Peças e Acessórios Eletrônicos SP', '44.555.666/0001-77', '(11) 2222-1111', 'vendas@pecaseletronicas.com'),
-('Distribuidora Global Drone Tech', '77.888.999/0001-22', '(41) 3222-9988', 'comercial@globaldronetech.com.br'),
-('Importadora Componentes FPV LTDA', '88.999.000/0001-44', '(11) 4004-5566', 'suprimentos@fpvimport.com.br'),
-('AgroDrones Supri Brasil LTDA', '55.444.333/0001-11', '(16) 3300-2211', 'vendas@agrodronessupri.com.br'),
-('Baterias e Motores Industrial S.A.', '66.333.222/0001-99', '(11) 4100-8877', 'comercial@batmotor.com.br');
+('Grupo Multilaser S.A.', '59.717.553/0001-02', '(11) 3198-0004', 'central.solucoes@grupomultilaser.com.br')
 
 -- ============================================================================
 -- 3. FUNCIONÁRIOS (8 registros)
