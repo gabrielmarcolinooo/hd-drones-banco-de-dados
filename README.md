@@ -15,7 +15,7 @@
 
 ---
 
-## 📌 Sumário / Índice do Documento
+##  Sumário / Índice do Documento
 
 1. [Caracterização da Organização e Revisão Conceitual](#1-caracterização-da-organização-e-revisão-conceitual)
    - [Tabela de Ajustes da E1 para a E2 (Caso A)](#-tabela-de-ajustes-da-entrega-1-para-a-entrega-2-caso-a)
@@ -56,7 +56,7 @@
 
 ![Foto do integrante presencialmente na loja HD Drones](./evidencias/foto_campo.jpg)
 
-### 🔄 Tabela de Ajustes da Entrega 1 para a Entrega 2 (Caso A)
+###  Tabela de Ajustes da Entrega 1 para a Entrega 2 (Caso A)
 
 | Apontamento da Correção da E1 | O que mudou no trabalho | Por quê |
 | :--- | :--- | :--- |
