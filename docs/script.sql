@@ -130,7 +130,27 @@ INSERT INTO Pecas_OS (id_os, id_produto, quantidade, preco_unitario_aplicado) VA
 (1, 3, 1, 150.00);
 
 
--- Relatório de Ordens de Serviço por Status e Faturamento
+-- ============================================================
+-- CONSULTAS GERENCIAIS (G01, G02...) E DE AUDITORIA (A01...)
+-- ============================================================
+
+-- G01 — Qual o saldo atual e o histórico de movimentações de produtos por fornecedor?
+-- Atende: P1 (Divergência de Saldo de Estoque) e KPI-01 (Saldo de Estoque Crítico)
+SELECT 
+    p.nome AS Produto,
+    p.categoria,
+    p.quantidade_estoque AS Saldo_Atual,
+    f.razao_social AS Fornecedor_Origem,
+    m.tipo_movimentacao,
+    m.quantidade_mov,
+    m.data_movimentacao
+FROM Produtos p
+LEFT JOIN Movimentacoes_Estoque m ON p.id = m.id_produto
+LEFT JOIN Fornecedores f ON m.id_fornecedor = f.id;
+
+
+-- G02 — Qual o faturamento total acumulado e a distribuição por status das Ordens de Serviço?
+-- Atende: P2 (Ausência de Controle Formal de Ordens de Serviço) e KPI-02 (Faturamento de Manutenção)
 SELECT 
     status,
     COUNT(id) AS Qtd_OS,
@@ -140,5 +160,28 @@ SELECT
 FROM Ordem_Servico
 GROUP BY status;
 
--- Garantir que nenhuma OS exista sem Cliente associado
-SELECT id, aparelho_drone, status FROM Ordem_Servico WHERE id_cliente IS NULL;
+
+-- G03 — Qual o faturamento bruto, custo total e lucro líquido apurado nas Vendas de Balcão por vendedor?
+-- Atende: P3 (Incerteza Financeira na Apuração de Margens e Comissões) e KPI-03 (Margem de Lucro)
+SELECT 
+    v.id AS ID_Venda,
+    v.data_hora,
+    v.forma_pagamento,
+    f.nome AS Vendedor,
+    c.nome_razao AS Cliente,
+    v.valor_total AS Valor_Bruto,
+    v.lucro_total AS Lucro_Líquido
+FROM Vendas v
+INNER JOIN Funcionario f ON v.id_funcionario = f.id
+LEFT JOIN Clientes c ON v.id_cliente = c.id;
+
+
+-- A01 — Existe alguma Ordem de Serviço registrada sem cliente vinculado?
+-- Verifica: RN03 (Obrigatoriedade de cliente cadastrado para abertura de Ordem de Serviço)
+SELECT 
+    id AS OS_Invalida, 
+    aparelho_drone, 
+    defeito_relatado, 
+    status 
+FROM Ordem_Servico 
+WHERE id_cliente IS NULL;
