@@ -9,7 +9,7 @@
 ---
 
 ## 1. Resumo da Visita e Contexto Operacional
-A pesquisa de campo foi conduzida presencialmente no ambiente da loja física e complementada via WhatsApp diretamente com o proprietário. O objetivo foi mapear os gargalos operacionais no fluxo de caixa diário, o controle físico do estoque de peças e o acompanhamento formal de Ordens de Serviço (OS).
+A pesquisa de campo foi conduzida online via WhatsApp com o proprietário. O objetivo foi mapear os gargalos operacionais no fluxo de caixa diário, o controle físico do estoque de peças e o acompanhamento formal de Ordens de Serviço (OS).
 
 A loja possui equipe enxuta (5 colaboradores), atendendo de 15 a 25 clientes por dia no balcão e mantendo um catálogo ativo de 150 a 300 produtos e peças de reposição.
 
@@ -26,7 +26,7 @@ A loja possui equipe enxuta (5 colaboradores), atendendo de 15 a 25 clientes por
 - **Necessidade / Regra de Negócio:** Obrigatoriedade de cadastrar o cliente (`Clientes`) com CPF/CNPJ e telefone para abertura da OS (`RN03`). Estrutura desmembrada da venda comum para permitir acompanhamento de status ('Orçamento', 'Em Manutenção', 'Concluído'), discriminação do valor de mão de obra e peças aplicadas (`Pecas_OS`), e garantia legal de 90 dias após a entrega (`RN04` - CDC).
 
 ### C. Gestão de Estoque e Compras com Fornecedores — `PR04`
-- **Rotina Atual:** Reposição de peças e drones através de fornecedores oficiais (ex: DJI Brasil Importadora LTDA).
+- **Rotina Atual:** Reposição de peças e drones através de fornecedores oficiais (ex: Multilaser).
 - **Necessidade / Regra de Negócio:** Resolver a divergência de saldo de estoque (`P1`). Dar baixa automática no estoque tanto por vendas diretas (`Compoe_Venda`) quanto por peças aplicadas em Ordens de Serviço (`Pecas_OS`). Registrar a auditoria de entradas de mercadoria na tabela `Movimentacoes_Estoque` vinculando o fornecedor de origem (`Fornecedores`).
 
 ### D. Apuração de Margens, Lucro e Comissões — `PR05`
