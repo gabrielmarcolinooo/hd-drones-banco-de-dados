@@ -200,7 +200,6 @@ INSERT INTO Clientes (nome_razao, cpf_cnpj, telefone, email, endereco) VALUES
 -- ============================================================================
 INSERT INTO Fornecedores (razao_social, cnpj, telefone, email) VALUES
 ('Grupo Multilaser S.A.', '59.717.553/0001-02', '(11) 3198-0004', 'central.solucoes@grupomultilaser.com.br')
-
 -- ============================================================================
 -- 3. FUNCIONÁRIOS (8 registros)
 -- ============================================================================
