@@ -40,7 +40,7 @@
 ## 1. Caracterização da Organização e Revisão Conceitual
 
 - **Nome e natureza da organização:** HD Drones — Comércio e Assistência Técnica de Drones e Acessórios LTDA. Empresa comercial e de serviços de pequeno porte (Sociedade Empresária Limitada).
-- **Contexto e porte:** Organização comercial e de serviços atuando na venda de drones novos/seminovos, peças de reposição, acessórios e serviços de manutenção/ordens de serviço. Conta com equipe enxuta composta por 5 colaboradores diretos: 1 gestor proprietário, 2 vendedores de balcão e 2 técnicos de assistência. Operação diária média de 15 a 25 atendimentos de balcão e 5 a 10 entradas de aparelhos para orçamento e reparo, mantendo um catálogo ativo de cerca de 150 a 300 produtos/peças em estoque.
+- **Contexto e porte:** Organização comercial e de serviços atuando na venda de drones novos/seminovos, peças de reposição, acessórios e serviços de manutenção/ordens de serviço. Conta com equipe enxuta composta por 8 colaboradores diretos: 1 gestor proprietário, 3 vendedores de balcão e 3 técnicos de assistência e 1 Atendente de Balcão. Operação diária média de 15 a 25 atendimentos de balcão e 5 a 10 entradas de aparelhos para orçamento e reparo, mantendo um catálogo ativo de cerca de 150 a 300 produtos/peças em estoque.
 - **Problemas e necessidades identificados:**
   - **`P1` — Divergência no Saldo de Estoque e Perda de Rastreabilidade:** Ausência de controle automatizado de entradas via fornecedores e saídas físicas de peças utilizadas na assistência técnica.
   - **`P2` — Ausência de Controle Formal de Ordens de Serviço (OS):** Dificuldade no acompanhamento dos estágios de manutenção (orçamento, aprovação, execução, mão de obra e garantia).
