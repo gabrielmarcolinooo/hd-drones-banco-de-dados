@@ -370,7 +370,7 @@ INSERT INTO Pecas_OS (id_os, id_produto, quantidade, preco_unitario_aplicado) VA
 (24, 18, 1, 1450.00);
 
 -- ============================================================================
--- 9. MOVIMENTACOES_ESTOQUE (30 registros)
+-- 9. MOVIMENTACOES_ESTOQUE (35 registros)
 -- ============================================================================
 INSERT INTO Movimentacoes_Estoque (id_produto, id_funcionario, id_fornecedor, quantidade_mov, observacao, data_movimentacao, tipo_movimentacao) VALUES
 (2, 3, 1, 40, 'NF 45890 - Reposição de baterias DJI Mini 3', '2026-07-20 09:00:00', 'Entrada Compra'),
@@ -401,6 +401,13 @@ INSERT INTO Movimentacoes_Estoque (id_produto, id_funcionario, id_fornecedor, qu
 (2, 3, NULL, -1, 'Bateria com vício de fabricação descartada', '2026-09-14 16:00:00', 'Perda'),
 (6, 3, NULL, 5, 'Ajuste de inventário - Contagem física superior', '2026-09-30 17:00:00', 'Ajuste Inventário'),
 (11, 3, NULL, 4, 'Ajuste de inventário - Correção de saldo', '2026-10-15 11:30:00', 'Ajuste Inventário');
+(7, 3, 4, 30, 'NF 31045 - Reposição de braços e motores DJI', '2026-10-26 10:00:00', 'Entrada Compra'),
+(1, 4, NULL, -1, 'Saída referente à Venda #21', '2026-10-28 14:15:00', 'Saída Venda'),
+(14, 2, NULL, -1, 'Peça aplicada na OS #26', '2026-10-29 15:40:00', 'Uso em OS'),
+(10, 3, NULL, -1, 'Bateria danificada em bancada por sobretensão', '2026-10-30 11:20:00', 'Perda'),
+(3, 3, NULL, -2, 'Ajuste de inventário - Quebra operacional identificada', '2026-10-31 16:30:00', 'Ajuste Inventário'),
+(16, 7, NULL, -2, 'Saída referente à Venda #25', '2026-11-03 11:00:00', 'Saída Venda'),
+(7, 8, NULL, -1, 'Peça aplicada na OS #29', '2026-11-05 09:30:00', 'Uso em OS');
 
 -- ============================================================================
 -- 10. HISTORICO_PRECOS (8 registros de auditoria de alteração de preço)
