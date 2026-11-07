@@ -1,5 +1,3 @@
-    ---
-
 # Entrega 2 — Relatório Técnico Final
 
 ### Modelagem Lógica, Normalização e Banco de Dados Relacional para a HD Drones
