@@ -1,4 +1,4 @@
----
+    ---
 
 # Entrega 2 — Relatório Técnico Final
 
@@ -9,11 +9,11 @@
 ## Metadados
 
 * **Nomes dos alunos, RGM e Git:**
-* Adriano Salviano Marcal | RGM: 48188697 | adrionomarccal
-* Arthur Tigre Francisco | RGM: 48201413 | tigrea021-ai
-* Gabriel de Oliveira Silva | RGM: 48203068 | Gabriel-Olvr
-* Gabriel Marcolino de Oliveira | RGM: 48226718 | gabrielmarcolinooo
-* Giovanni dos Santos Silva | RGM: 48159077 |giovannisantos458-internauta
+* Adriano Salviano Marcal | RGM: 48188697 |  [adrionomarccal](https://github.com/adrianomarccal)
+* Arthur Tigre Francisco | RGM: 48201413 | [tigrea021-ai](https://github.com/tigrea021-ai)
+* Gabriel de Oliveira Silva | RGM: 48203068 | [Gabriel-Olvr](https://github.com/Gabriel-Olvr)
+* Gabriel Marcolino de Oliveira | RGM: 48226718 | [gabrielmarcolinooo](https://github.com/gabrielmarcolinooo)
+* Giovanni dos Santos Silva | RGM: 48159077 | [giovannisantos458-internauta](https://github.com/giovannisantos458-netizen)
 
 
 
