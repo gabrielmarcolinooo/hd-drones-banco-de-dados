@@ -51,10 +51,15 @@
   - **Endereço Completo:** Rua Santa Ifigênia, 480, Loja 22 — Centro Histórico de São Paulo, São Paulo - SP, CEP: 01207-000.
   - **Forma de Contato:** Telefone/WhatsApp empresarial: (11) 98609-6460 | E-mail: contato@hddrones.com.br.
   - **Perfil no Google:** [Google Maps — HD Drones Santa Ifigênia](https://maps.app.goo.gl/kXECRvr7fZs1BGMM7)
-  - **Atividades e Acesso de Campo:** O integrante do grupo Gabriel Marcolino de Oliveira trabalha na própria organização, garantindo acesso direto e diário ao proprietário, às rotinas operacionais, ao fluxo do caixa (PDV) e ao levantamento das ordens de serviço (OS).
-  - **Comprovação Visual no Local:**
+  - **Atividades e Acesso de Campo:** O integrante do grupo Gabriel de Oliveira Silva trabalhava na própria organização, o que garantiu mais facilmente o acesso direto e diário ao proprietário que tem acesso às rotinas operacionais, ao fluxo do caixa (PDV) e ao levantamento das ordens de serviço (OS).
+  - **Comprovação Visual do Local:**
 
 ![Foto do integrante presencialmente na loja HD Drones](./evidencias/foto_campo.jpg)
+
+  - **Comprovação de contato com o proprietário:**
+
+  ![Conversa com proprietario](./evidencias/Conversa_proprietario.jpeg)
+
 
 ###  Tabela de Ajustes da Entrega 1 para a Entrega 2 (Caso A)
 
