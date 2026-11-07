@@ -1,6 +1,15 @@
-DROP DATABASE hd_drones;
+-- ============================================================
+-- SCRIPT SQL COMPLETO E CONSOLIDADO — HD DRONES
+-- SGBD: MySQL 8 (Mecanismo de Armazenamento: InnoDB)
+-- ============================================================
+
+DROP DATABASE IF EXISTS hd_drones;
 CREATE DATABASE hd_drones;
 USE hd_drones;
+
+-- ------------------------------------------------------------
+-- 1. ESTRUTURA DDL (CRIAR TABELAS E RESTRIÇÕES)
+-- ------------------------------------------------------------
 
 CREATE TABLE Clientes (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -67,8 +76,8 @@ CREATE TABLE Ordem_Servico (
     valor_total DECIMAL(10, 2) DEFAULT 0.00,
     data_abertura DATETIME DEFAULT CURRENT_TIMESTAMP,
     data_conclusao DATETIME NULL,
-    prazo_garantia_dias INT DEFAULT 90, -- CDC Exigência Legal
-    id_cliente INT NOT NULL, -- OBRIGATÓRIO: Toda OS pertence a um cliente
+    prazo_garantia_dias INT DEFAULT 90, -- CDC Exigência Legal (RN04)
+    id_cliente INT NOT NULL, -- OBRIGATÓRIO: Toda OS pertence a um cliente (RN03)
     id_tecnico INT NOT NULL,
     CONSTRAINT fk_os_cliente FOREIGN KEY (id_cliente) REFERENCES Clientes(id) ON DELETE RESTRICT,
     CONSTRAINT fk_os_tecnico FOREIGN KEY (id_tecnico) REFERENCES Funcionario(id) ON DELETE RESTRICT
@@ -98,24 +107,34 @@ CREATE TABLE Movimentacoes_Estoque (
     CONSTRAINT fk_mov_fornecedor FOREIGN KEY (id_fornecedor) REFERENCES Fornecedores(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
+-- ------------------------------------------------------------
+-- 2. CARGA DE MASSA DE DADOS FICTÍCIA (DML)
+-- (15 a 25 atendimentos/dia, 150 a 300 itens em catálogo).
+-- ------------------------------------------------------------
+ 
+-- INSERT 01: Carga de Clientes
 INSERT INTO Clientes (nome_razao, cpf_cnpj, telefone, email, endereco) VALUES
 ('João da Silva', '111.222.333-44', '(11) 98888-1111', 'joao@email.com', 'Rua das Flores, 123 - SP'),
 ('Empresa Fly Film LTDA', '12.345.678/0001-90', '(11) 97777-2222', 'contato@flyfilm.com', 'Av. Paulista, 1000 - SP');
 
+-- INSERT 02: Carga de Fornecedores
 INSERT INTO Fornecedores (razao_social, cnpj, telefone, email) VALUES
 ('DJI Brasil Importadora LTDA', '00.111.222/0001-33', '(11) 3333-0000', 'compras@djibrasil.com'),
 ('Peças e Acessórios Eletrônicos SP', '44.555.666/0001-77', '(11) 2222-1111', 'vendas@pecaseletronicas.com');
 
+-- INSERT 03: Carga de Funcionários
 INSERT INTO Funcionario (nome, cargo) VALUES
 ('Carlos Vendedor', 'Vendedor'),
 ('Mariana Técnica', 'Técnica de Manutenção'),
 ('Roberto Gerente', 'Gerente');
 
+-- INSERT 04: Carga do Catálogo de Produtos e Peças
 INSERT INTO Produtos (nome, categoria, preco_venda, quantidade_estoque, preco_custo) VALUES
 ('Drone DJI Mini 3 Pro', 'Drones', 5000.00, 5, 3500.00),
 ('Bateria Inteligente DJI Mini 3', 'Baterias', 600.00, 10, 380.00),
 ('Cabo Flat Gimbal Mavic 2', 'Peças', 150.00, 8, 45.00);
 
+-- INSERT 05: Carga de Vendas de Balcão e Itens Compostos
 INSERT INTO Vendas (valor_total, lucro_total, forma_pagamento, id_cliente, id_funcionario) VALUES
 (5600.00, 1720.00, 'Pix', 1, 1);
 
@@ -123,16 +142,21 @@ INSERT INTO Compoe_Venda (id_venda, id_produto, quantidade, preco_unitario_aplic
 (1, 1, 1, 5000.00, 3500.00),
 (1, 2, 1, 600.00, 380.00);
 
+-- INSERT 06: Carga de Ordens de Serviço (OS) e Peças Aplicadas
 INSERT INTO Ordem_Servico (aparelho_drone, defeito_relatado, status, valor_mao_obra, valor_pecas, valor_total, id_cliente, id_tecnico) VALUES
 ('DJI Mavic 2 Pro', 'Queda de altitude e cabo flat partido', 'Concluído', 300.00, 150.00, 450.00, 2, 2);
 
 INSERT INTO Pecas_OS (id_os, id_produto, quantidade, preco_unitario_aplicado) VALUES
 (1, 3, 1, 150.00);
 
+-- INSERT 07: Carga de Movimentações de Estoque
+INSERT INTO Movimentacoes_Estoque (id_produto, id_funcionario, id_fornecedor, quantidade_mov, observacao, tipo_movimentacao) VALUES
+(1, 3, 1, 5, 'Entrada de lote via compra oficial', 'Entrada Compra'),
+(3, 2, 2, 1, 'Utilizado no conserto da OS #1', 'Uso em OS');
 
--- ============================================================
--- CONSULTAS GERENCIAIS (G01, G02...) E DE AUDITORIA (A01...)
--- ============================================================
+-- ------------------------------------------------------------
+-- 3. CONSULTAS GERENCIAIS (G01, G02...) E DE AUDITORIA (A01...)
+-- ------------------------------------------------------------
 
 -- G01 — Qual o saldo atual e o histórico de movimentações de produtos por fornecedor?
 -- Atende: P1 (Divergência de Saldo de Estoque) e KPI-01 (Saldo de Estoque Crítico)
