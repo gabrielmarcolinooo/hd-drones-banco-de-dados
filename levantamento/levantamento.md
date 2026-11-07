@@ -11,7 +11,7 @@
 ## 1. Resumo da Visita e Contexto Operacional
 A pesquisa de campo foi conduzida online via WhatsApp com o proprietário. O objetivo foi mapear os gargalos operacionais no fluxo de caixa diário, o controle físico do estoque de peças e o acompanhamento formal de Ordens de Serviço (OS).
 
-A loja possui equipe enxuta (5 colaboradores), atendendo de 15 a 25 clientes por dia no balcão e mantendo um catálogo ativo de 150 a 300 produtos e peças de reposição.
+A loja possui equipe enxuta (8 colaboradores), atendendo de 15 a 25 clientes por dia no balcão e mantendo um catálogo ativo de 150 a 300 produtos e peças de reposição.
 
 ---
 
