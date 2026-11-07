@@ -54,7 +54,8 @@
   - **Atividades e Acesso de Campo:** O integrante do grupo Gabriel de Oliveira Silva trabalhava na própria organização, o que garantiu mais facilmente o acesso direto e diário ao proprietário que tem acesso às rotinas operacionais, ao fluxo do caixa (PDV) e ao levantamento das ordens de serviço (OS).
   - **Comprovação Visual do Local:**
 
-![Foto do integrante presencialmente na loja HD Drones](./evidencias/foto_campo.jpg)
+![Foto da fachada da loja HD Drones](./evidencias/foto_fachada_campo.jpg)
+
 
   - **Comprovação de contato com o proprietário:**
 
