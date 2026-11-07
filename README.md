@@ -68,7 +68,7 @@
 | :--- | :--- | :--- |
 | **Fusão incorreta da OS em Vendas** | Desmembrada a estrutura: criada a tabela `Ordem_Servico` separada de `Vendas`, com a tabela associativa `Pecas_OS`. | Para permitir o registro de OS em andamento, orçamento, aparelho, defeito, mão de obra e peças aplicadas. |
 | **Ausência do Ciclo de Compras/Fornecedores** | Adicionada a tabela `Fornecedores` relacionando-se com `Movimentacoes_Estoque`. | Para garantir a rastreabilidade da origem dos produtos adquiridos pela loja. |
-| **Falta de Comprovação Visual no README** | Renderizada a imagem presencial de campo no `README.md` e incluído endereço completo com número e CEP. | Para validar a existência real da organização e eliminar os fatores multiplicadores de penalidade. |
+| **Falta de Comprovação Visual no README** | Renderizada a imagem da fachada da loja no `README.md` e incluído endereço completo com número e CEP. | Para validar a existência real da organização e eliminar os fatores multiplicadores de penalidade. |
 | **Erros Notacionais e Tipos no Dicionário** | Atualizados os tipos monetários para `DECIMAL(10,2)` e padronizados os nomes das colunas entre o dicionário e o SQL. | Para garantir conformidade com o modelo relacional no MySQL 8. |
 
 ---
