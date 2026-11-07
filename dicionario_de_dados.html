@@ -87,11 +87,10 @@
     </style>
 </head>
 <body>
-
     <h1>Caso: Dicionário de Dados do Sistema Comercial HD Drones</h1>
 
     <h2>1. Modelo Conceitual</h2>
-    <p>Este modelo representa a operação comercial da <strong>HD Drones</strong>, cobrindo o fluxo de atendimento em balcão (PDV), ordens de serviço (OS) de manutenção técnica, controle de estoque com fornecedores e auditoria de colaboradores.</p>
+    <p>Este modelo representa a operação comercial da <strong>HD Drones</strong>, cobrindo o fluxo de atendimento em balcão (PDV), ordens de serviço (OS) de manutenção técnica, controle de estoque com fornecedores, auditoria de colaboradores e rastreabilidade de alterações de preços.</p>
 
     <table>
         <thead>
@@ -147,10 +146,20 @@
                 <td><strong>Movimentacoes_Estoque</strong></td>
                 <td><strong>1:N</strong> — Um funcionário autoriza múltiplos lançamentos de estoque (0,n); cada movimentação é registrada por um funcionário (1,1).</td>
             </tr>
+            <tr>
+                <td><strong>Produtos</strong></td>
+                <td><strong>Historico_Precos</strong></td>
+                <td><strong>1:N</strong> — Um produto possui múltiplos registros históricos de alteração de custos e preços (0,n); cada alteração refere-se a um produto (1,1).</td>
+            </tr>
+            <tr>
+                <td><strong>Funcionario</strong></td>
+                <td><strong>Historico_Precos</strong></td>
+                <td><strong>1:N</strong> — Um funcionário registra múltiplas alterações de preços (0,n); cada registro de histórico é efetuado por um funcionário (1,1).</td>
+            </tr>
         </tbody>
     </table>
 
-    <p>O sistema desdobra os atendimentos comerciais em <strong>Vendas</strong> (balcão) e <strong>Ordem_Servico</strong> (assistência técnica), relacionando-se com <strong>Clientes</strong>, <strong>Funcionario</strong>, <strong>Fornecedores</strong> e <strong>Produtos</strong> através das tabelas associativas e de movimentação.</p>
+    <p>O sistema desdobra os atendimentos comerciais em <strong>Vendas</strong> (balcão) e <strong>Ordem_Servico</strong> (assistência técnica), relacionando-se com <strong>Clientes</strong>, <strong>Funcionario</strong>, <strong>Fornecedores</strong>, <strong>Produtos</strong> e <strong>Historico_Precos</strong> através das tabelas associativas e de movimentação.</p>
     <ul>
         <li><strong>Clientes:</strong> Pessoa física ou jurídica compradora de drones ou tomadora de serviços de assistência técnica.</li>
         <li><strong>Fornecedores:</strong> Pessoa jurídica distribuidora de drones, peças e acessórios de reposição.</li>
@@ -161,12 +170,14 @@
         <li><strong>Ordem_Servico:</strong> Registro formal de manutenção técnica de drones, cobrindo status, defeito, mão de obra e prazos legais de garantia.</li>
         <li><strong>Pecas_OS:</strong> Tabela associativa que desdobra as peças aplicadas na manutenção do drone.</li>
         <li><strong>Movimentacoes_Estoque:</strong> Log auditável de fluxo físico do inventário (compras, vendas, uso em OS, ajustes e perdas).</li>
+        <li><strong>Historico_Precos:</strong> Registro imutável de auditoria de alterações de preços de custo e venda dos produtos ao longo do tempo.</li>
     </ul>
 
     <h2>2. Fluxo de Dados</h2>
     <p>
       Atendimento de Balcão &rarr; consulta/cadastro em <code>Clientes</code> &rarr; emissão de registro em <code>Vendas</code> vinculado a um <code>Funcionario</code> (vendedor) &rarr; conexão com itens em <code>Produtos</code> via <code>Compoe_Venda</code> (congelando valores e dando baixa em estoque) &rarr; lançamentos automáticos ou manuais de reposição via <code>Fornecedores</code> auditados em <code>Movimentacoes_Estoque</code>.<br><br>
-      Assistência Técnica &rarr; abertura de registro obrigatório em <code>Ordem_Servico</code> vinculado a um <code>Clientes</code> e a um <code>Funcionario</code> (técnico) &rarr; aplicação de peças de <code>Produtos</code> via <code>Pecas_OS</code> &rarr; atualização de status e fechamento com valor de mão de obra e prazo de garantia CDC.
+      Assistência Técnica &rarr; abertura de registro obrigatório em <code>Ordem_Servico</code> vinculado a um <code>Clientes</code> e a um <code>Funcionario</code> (técnico) &rarr; aplicação de peças de <code>Produtos</code> via <code>Pecas_OS</code> &rarr; atualização de status e fechamento com valor de mão de obra e prazo de garantia CDC.<br><br>
+      Auditoria de Preços &rarr; atualizações cadastrais em <code>Produtos</code> geram registros automáticos na tabela <code>Historico_Precos</code> vinculados ao <code>Funcionario</code> responsável pela alteração.
     </p>
 
     <h2>3. Convenções do Dicionário</h2>
@@ -196,8 +207,8 @@
 
     <p><strong>Prefixos:</strong> <code>@id</code> identificador (chave primária), <code>nome_razao</code> / <code>nome</code> nomenclatura textual, <code>cpf_cnpj</code> / <code>cnpj</code> documento fiscal, <code>valor_</code> / <code>preco_</code> valor monetário (<code>DECIMAL(10,2)</code>), <code>quantidade</code> quantidade inteira, <code>data_</code> carimbo de data/hora (<code>DATETIME</code>).</p>
     <p>
-      <strong>Versão deste dicionário:</strong> v2.0, 06/novembro/2026.<br>
-      Revisado para alinhamento estrito com a DDL em MySQL 8 do script oficial e conformidade com a LGPD (art. 6º, X).
+      <strong>Versão deste dicionário:</strong> v2.1, 07/novembro/2026.<br>
+      Revisado para alinhamento estrito com a DDL em MySQL 8 do script oficial (incluindo a tabela <code>Historico_Precos</code>) e conformidade com a LGPD (art. 6º, X).
     </p>
 
     <h2>4. Dicionário de Dados por Entidade</h2>
@@ -447,8 +458,37 @@
     </table>
     <div class="indices"><strong>Índices:</strong> PRIMARY KEY (id); FOREIGN KEY (id_produto); FOREIGN KEY (id_funcionario); FOREIGN KEY (id_fornecedor).</div>
 
+    <h3>Historico_Precos</h3>
+    <div class="notacao">
+        Historico_Precos = @id + id_produto + id_funcionario + DT_data_alteracao + preco_custo_novo + preco_venda_novo + preco_custo_antigo + preco_venda_antigo
+    </div>
+    <div class="leitura">
+        Leitura: Registra a auditoria de alterações de preços dos produtos; associa o produto alterado e o funcionário responsável pela modificação, preservando os valores antigos e novos.
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Atributo</th>
+                <th>Tipo Físico</th>
+                <th>Obrigatório</th>
+                <th>Significado e Relevância</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>id</td><td>INT</td><td>Sim (PK)</td><td>Identificador único do registro de histórico de preço.</td></tr>
+            <tr><td>id_produto</td><td>INT</td><td>Sim (FK Produtos)</td><td>Referência ao produto que sofreu alteração de preço.</td></tr>
+            <tr><td>id_funcionario</td><td>INT</td><td>Sim (FK Funcionario)</td><td>Funcionário responsável por efetuar a alteração.</td></tr>
+            <tr><td>data_alteracao</td><td>DATETIME</td><td>Sim (Default)</td><td>Data e hora em que a alteração foi efetuada.</td></tr>
+            <tr><td>preco_custo_novo</td><td>DECIMAL(10,2)</td><td>Sim</td><td>Novo preço de custo atualizado do item.</td></tr>
+            <tr><td>preco_venda_novo</td><td>DECIMAL(10,2)</td><td>Sim</td><td>Novo preço de venda atualizado do item.</td></tr>
+            <tr><td>preco_custo_antigo</td><td>DECIMAL(10,2)</td><td>Sim</td><td>Preço de custo anterior à modificação.</td></tr>
+            <tr><td>preco_venda_antigo</td><td>DECIMAL(10,2)</td><td>Sim</td><td>Preço de venda anterior à modificação.</td></tr>
+        </tbody>
+    </table>
+    <div class="indices"><strong>Índices:</strong> PRIMARY KEY (id); FOREIGN KEY (id_produto); FOREIGN KEY (id_funcionario).</div>
+
     <h2>5. Log de Acesso e Auditabilidade</h2>
-    <p>O conjunto de tabelas opera sob a infraestrutura nativa do MySQL 8. Operações críticas de escrita e atualizações em movimentações de estoque, valores e cadastros de ordens de serviço são auditadas garantindo imutabilidade e rastreabilidade através de logs transacionais do mecanismo InnoDB e registros relacionais encadeados por chaves estrangeiras com restrição <code>RESTRICT</code>/<code>CASCADE</code>.</p>
+    <p>O conjunto de tabelas opera sob a infraestrutura nativa do MySQL 8. Operações críticas de escrita e atualizações em movimentações de estoque, valores, histórico de preços e cadastros de ordens de serviço são auditadas garantindo imutabilidade e rastreabilidade através de logs transacionais do mecanismo InnoDB e registros relacionais encadeados por chaves estrangeiras com restrição <code>RESTRICT</code>/<code>CASCADE</code>.</p>
 
     <h2>6. Acesso por Operação e Conformidade com a LGPD (Metadado Administrativo)</h2>
     <table>
@@ -522,6 +562,13 @@
                 <td>Movimentacoes_Estoque</td>
                 <td>Gerente, Vendedor, Técnico</td>
                 <td>Gerente, Vendedor, Técnico</td>
+                <td>Nenhum papel (Imutável)</td>
+                <td>Nenhum papel (Imutável)</td>
+            </tr>
+            <tr>
+                <td>Historico_Precos</td>
+                <td>Gerente</td>
+                <td>Gerente</td>
                 <td>Nenhum papel (Imutável)</td>
                 <td>Nenhum papel (Imutável)</td>
             </tr>
