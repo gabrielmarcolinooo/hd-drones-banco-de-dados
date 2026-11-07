@@ -9,7 +9,7 @@
 ---
 
 ## 1. Resumo da Visita e Contexto Operacional
-A pesquisa de campo foi conduzida presencialmente no balcão de atendimento e na bancada de assistência técnica da loja. O objetivo foi mapear os gargalos do fluxo de caixa diário, o controle físico de peças em estoque e o acompanhamento de Ordens de Serviço (OS).
+A pesquisa de campo foi conduzida através de conversas pelo Whatsapp. O objetivo foi mapear os gargalos do fluxo de caixa diário, o controle físico de peças em estoque e o acompanhamento de Ordens de Serviço (OS).
 
 ---
 
